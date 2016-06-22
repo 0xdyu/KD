@@ -127,7 +127,11 @@ DEFAULT_CHARSET = 'utf-8'
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'users.User'
+STATICFILES_DIRS = (
+
+os.path.join(BASE_DIR, 'static'),
+
+)
 
 ###
 
