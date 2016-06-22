@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
-from kd.models import Order
+from kd.models import Order, EndUser, ShippingUser, OrderStatus
 from django.shortcuts import get_object_or_404
 from random import randint
 import datetime
@@ -10,6 +10,7 @@ import datetime
 def home(request):
     return render(request, 'kd/home.html')
 
+@csrf_protect
 def create(request):
     return render(request, 'kd/create.html')
 
@@ -17,32 +18,60 @@ def create(request):
 def create_order(request):
     if request.method == "POST":
         id = __generate_order_id()
-        while Order.objects.filter(id=id).exists():
-            id = __generate_order_id()
+        shipping_user_id=__generate_user_id()
+        sender_id=__check_enduser_exists(request.POST['sender_name'], 
+            request.POST['sender_phone_number'], 
+            request.POST['sender_company_name'], 
+            request.POST['sender_address'], 
+            request.POST['sender_postcode'])
+        receiver_id=__check_enduser_exists(request.POST['receiver_name'], 
+            request.POST['receiver_phone_number'], 
+            request.POST['receiver_company_name'], 
+            request.POST['receiver_address'], 
+            request.POST['receiver_postcode'])
         Order.objects.create(id=id,
-                create_time=datetime.datetime.now(),
-                update_time=datetime.datetime.now(),
-                current_status=request.POST['package_current_status'],
-                current_location=request.POST['package_current_location'],
                 weight=request.POST['package_weight'],
-                sender_name=request.POST['sender_name'],
-                sender_address=request.POST['sender_address'],
-                sender_city=request.POST['sender_city'],
-                sender_country=request.POST['sender_country'],
-                sender_zip=request.POST['sender_zip'],
-                sender_contact=request.POST['sender_contact'],
-                receiver_name=request.POST['receiver_name'],
-                receiver_address=request.POST['receiver_address'],
-                receiver_city=request.POST['receiver_city'],
-                receiver_country=request.POST['receiver_country'],
-                receiver_zip=request.POST['receiver_zip'],
-                receiver_contact=request.POST['receiver_contact']
+                shipping_user_id=shipping_user_id,
+                sender_id=sender_id,
+                receiver_id=receiver_id
                 )
+        OrderStatus.objects.create(order_id=id,
+            time=datetime.datetime.now(),
+            status=request.POST['package_current_status'],
+            location=request.POST['package_current_location'],
+            primKey=str(id)+str(datetime.datetime.now())
+            )
         
     return render(request, 'kd/create.html', {}) 
 
-# Generate 10 digit random nubmer, return string
+# Generate 10 digit random nubmer for order id, return string
 def __generate_order_id():
     start = 10 ** 9
     end = (10 ** 10) - 1
-    return str(randint(start, end))
+    random_id = str(randint(start, end))
+    while Order.objects.filter(id=random_id).exists():
+            random_id = __generate_order_id()
+    return random_id;
+
+# Generate 10 digit random nubmer for user id, return string
+def __generate_user_id():
+    start = 10 ** 9
+    end = (10 ** 10) - 1
+    random_id = str(randint(start, end))
+    while EndUser.objects.filter(user_id=random_id).exists() or ShippingUser.objects.filter(user_id=random_id).exists():
+            random_id = __generate_order_id()
+    return random_id;
+
+# check the existing about end user and create the end user if this is a new end user
+def __check_enduser_exists(user_name, phone_number, company_name, address, postcode):
+    if EndUser.objects.filter(name=user_name, phone_number=phone_number).exists():
+            return EndUser.objects.get(name=user_name, phone_number=phone_number).user_id;
+    user_id = __generate_user_id()
+    EndUser.objects.create(user_id=user_id,
+            name=user_name,
+            phone_number=phone_number,
+            company_name=company_name,
+            address=address,
+            postcode=postcode
+            )
+    return user_id;
