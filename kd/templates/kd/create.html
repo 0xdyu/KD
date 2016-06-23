@@ -13,6 +13,7 @@
 	<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
     </head>
     <body>
+    <a href="/user_profile">back to account dashboard</a>
         <h1>创建快递单</h1>
         <form action="/create_order/" method="post">
             {% csrf_token %}

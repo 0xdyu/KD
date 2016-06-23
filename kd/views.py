@@ -34,6 +34,8 @@ def search_order(request):
 
 @csrf_protect
 def order_info_insider(request):
+    if request.user.is_authenticated()==False or request.user.email != Order.objects.get(id=request.GET['order_id']).shipping_user_id:
+        return render(request, 'kd/search_order_failed.html', {'order_id' : request.GET['order_id']})
     if request.method == "GET":
         order_id = request.GET['order_id']
         if OrderStatus.objects.filter(order_id=order_id).exists():
@@ -51,6 +53,8 @@ def order_info_insider(request):
 
 @csrf_protect
 def order_update_call(request):
+    if request.user.is_authenticated()==False or request.user.email != Order.objects.get(id=request.GET['order_id']).shipping_user_id:
+        return render(request, 'kd/order_update_fail.html', {'order_id' : request.GET['order_id']})
     return render(request, 'kd/order_update.html', {'order_id' : request.GET['order_id']})
 
 @csrf_protect
@@ -66,7 +70,7 @@ def order_update(request):
                 )
             return render(request, 'kd/order_update_success.html', {'order_id' : order_id})
         else:
-            return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
+            return render(request, 'kd/order_update_fail.html', {'order_id' : order_id})
     return render(request, 'kd/home.html', {})
 
 @csrf_protect
