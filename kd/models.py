@@ -8,7 +8,7 @@ from django.db import models
 class Order(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     weight = models.FloatField(null=True,blank=True,verbose_name=u"重量")
-    shipping_user_id = models.CharField(null=True, max_length=10, verbose_name=u"承运人")
+    shipping_user_id = models.CharField(null=True, max_length=50, verbose_name=u"寄送人邮箱")
     sender_id = models.CharField(null=True, max_length=10, verbose_name=u"发件人")
     receiver_id = models.CharField(null=True,max_length=10, verbose_name=u"收件人")
 
