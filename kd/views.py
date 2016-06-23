@@ -12,7 +12,8 @@ def home(request):
 
 @csrf_protect
 def user_profile(request):
-    return render(request, 'kd/profile.html')
+    objects=Order.objects.filter(shipping_user_id=request.user.email, valid="Yes")
+    return render(request, 'kd/profile.html', {'orders' : objects})
 
 @csrf_protect
 def search_order(request):
@@ -29,6 +30,43 @@ def search_order(request):
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
         
+    return render(request, 'kd/home.html', {})
+
+@csrf_protect
+def order_info_insider(request):
+    if request.method == "GET":
+        order_id = request.GET['order_id']
+        if OrderStatus.objects.filter(order_id=order_id).exists():
+            objects=OrderStatus.objects.filter(order_id=order_id).order_by('-time')
+            return render(request, 'kd/order_info_insider.html', 
+                {'order_id' : order_id, 
+                'order_status' : objects.values('status')[0]['status'], 
+                'curr_location' : objects.values('location')[0]['location'],
+                'update_time' : objects.values('time')[0]['time']})
+
+        else:
+            return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
+        
+    return render(request, 'kd/profile.html', {})
+
+@csrf_protect
+def order_update_call(request):
+    return render(request, 'kd/order_update.html', {'order_id' : request.GET['order_id']})
+
+@csrf_protect
+def order_update(request):
+    if request.method == "POST":
+        order_id = request.POST['order_id']
+        if OrderStatus.objects.filter(order_id=order_id).exists():
+            OrderStatus.objects.create(order_id=order_id,
+                time=datetime.datetime.now(),
+                status=request.POST['package_current_status'],
+                location=request.POST['package_current_location'],
+                primKey=str(order_id)+str(datetime.datetime.now())
+                )
+            return render(request, 'kd/order_update_success.html', {'order_id' : order_id})
+        else:
+            return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
     return render(request, 'kd/home.html', {})
 
 @csrf_protect
@@ -55,7 +93,9 @@ def create_order(request):
                 weight=request.POST['package_weight'],
                 shipping_user_id=request.user.email,
                 sender_id=sender_id,
-                receiver_id=receiver_id
+                receiver_id=receiver_id,
+                create_time=datetime.datetime.now(),
+                valid='Yes'
                 )
         OrderStatus.objects.create(order_id=id,
             time=datetime.datetime.now(),

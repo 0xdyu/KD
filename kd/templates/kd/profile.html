@@ -8,6 +8,9 @@
         <a href="/accounts/logout">logout</a><p></p>
         <a href="/create">create new order</a>
         <p>Your Orders:</p>
-        
+        ID   Weight Check<br>
+        {% for order in orders %}
+        		{{order.id}} {{order.weight}} <a href="/order_info/?order_id={{order.id}}">查询</a><br>
+        {% endfor %}
     </body>
 </html>
