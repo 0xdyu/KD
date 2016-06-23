@@ -22,13 +22,13 @@
 			<a class = "navbar-brand" href="#"> <h2>欢迎使用可达物流管理系统！ </h2></a> 	</div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="#">首頁 </a></li>
-				<li><a href="#">登录</a></li>
+				<li><a href="/accounts/login">登录</a></li>
 			</ul>
 		</div>
 	</nav>
 
         <p>请输入快递单号进行查询！</p>
-        <form action="/query/" method="get">
+        <form action="/search_order/" method="get">
             快递单号：<input type="text" name="order_id"><br>
 
             <input type="submit" value="提交">

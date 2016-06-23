@@ -11,14 +11,36 @@ def home(request):
     return render(request, 'kd/home.html')
 
 @csrf_protect
+def user_profile(request):
+    return render(request, 'kd/profile.html')
+
+@csrf_protect
+def search_order(request):
+    if request.method == "GET":
+        order_id = request.GET['order_id']
+        if OrderStatus.objects.filter(order_id=order_id).exists():
+            objects=OrderStatus.objects.filter(order_id=order_id).order_by('-time')
+            return render(request, 'kd/order_info.html', 
+                {'order_id' : order_id, 
+                'order_status' : objects.values('status')[0]['status'], 
+                'curr_location' : objects.values('location')[0]['location'],
+                'update_time' : objects.values('time')[0]['time']})
+
+        else:
+            return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
+        
+    return render(request, 'kd/home.html', {})
+
+@csrf_protect
 def create(request):
     return render(request, 'kd/create.html')
 
 @csrf_protect
 def create_order(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
     if request.method == "POST":
         id = __generate_order_id()
-        shipping_user_id=__generate_user_id()
         sender_id=__check_enduser_exists(request.POST['sender_name'], 
             request.POST['sender_phone_number'], 
             request.POST['sender_company_name'], 

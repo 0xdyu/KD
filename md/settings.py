@@ -127,11 +127,7 @@ DEFAULT_CHARSET = 'utf-8'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-
-os.path.join(BASE_DIR, 'static'),
-
-)
+AUTH_USER_MODEL = 'users.User'
 
 ###
 
@@ -154,6 +150,7 @@ USERS_CHECK_PASSWORD_COMPLEXITY = True
 
 USERS_SPAM_PROTECTION = False  # important!
 
+LOGIN_REDIRECT_URL = 'user_profile'
 
 #  ---------------------------------------------------------
 #  Email
