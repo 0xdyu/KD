@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>可达物流管理系统</title>
 	{% load staticfiles %}
+        <title>可达物流管理系统</title>
 	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
 	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 	<!-- 引入 Bootstrap -->
@@ -12,9 +12,23 @@
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
 	<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
     </head>
-    <body>
-    <a href="/user_profile">back to account dashboard</a>
-        <h1>创建快递单</h1>
+    
+	<body>
+	
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		    <div class = "navbar-header"> 
+			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
+			<ul class="nav navbar-nav">  
+				<li class="acitve"><a href="/user_profile">首頁 </a></li>
+				<li><a href="/accounts/login">登录</a></li>
+			</ul>
+		</div>
+	</nav>
+       
+        
+<h1>创建快递单</h1>
         <form action="/create_order/" method="post">
             {% csrf_token %}
 	<div>
@@ -32,10 +46,12 @@
             寄件人公司: <input type="text" name="sender_company_name"><br>
             寄件人联系方式: <input type="text" name="sender_phone_number"><br>
 	</div>
-
+	
+	<div>
             重量: <input type="text" name="package_weight"><br>
             当前状态: <input type="text" name="package_current_status"><br>
             当前地点: <input type="text" name="package_current_location"><br>
+	</div>
 
             <input type="submit" value="提交">
         </form>    
