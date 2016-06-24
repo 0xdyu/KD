@@ -12,6 +12,8 @@ def home(request):
 
 @csrf_protect
 def user_profile(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
     objects=Order.objects.filter(shipping_user_id=request.user.email, valid="Yes")
     return render(request, 'kd/profile.html', {'orders' : objects})
 
@@ -59,6 +61,8 @@ def order_update_call(request):
 
 @csrf_protect
 def order_update(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
     if request.method == "POST":
         order_id = request.POST['order_id']
         if OrderStatus.objects.filter(order_id=order_id).exists():
@@ -75,6 +79,8 @@ def order_update(request):
 
 @csrf_protect
 def create(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
     return render(request, 'kd/create.html')
 
 @csrf_protect
