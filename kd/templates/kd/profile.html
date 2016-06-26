@@ -21,14 +21,13 @@
 		    <div class = "navbar-header"> 
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
-				<li class="acitve"><a href="/user_profile">首頁 </a></li>
-				<li><a href="/accounts/login">登录</a></li>
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li><a href="/accounts/logout">logout</a></li>
 			</ul>
 		</div>
 	</nav>
 
         <p>This is your profile, {{ user.email }}.</p>
-        <a href="/accounts/logout">logout</a><p></p>
         <a href="/create">create new order</a>
         <p>Your Orders:</p>
         ID   Weight Check<br>
