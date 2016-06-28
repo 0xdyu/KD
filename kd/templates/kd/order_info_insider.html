@@ -26,11 +26,12 @@
 			</ul>
 		</div>
 	</nav>
-
+		<div class="container-fluid">
 	    	<li><a href="/order_update_call/?order_id={{order_id}}">更新订单</a></li>
-
+		<li><a href="/user_profile">back to account dashboard</a></li>
+		</div>
 	
-	<div>
+	<div class="well well-lg">
         <p>Order No. {{ order_id }}</p>
         <p>Update Time: {{ update_time }}</p>
         <p>Status: {{ order_status }}</p>

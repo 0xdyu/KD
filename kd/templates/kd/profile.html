@@ -26,13 +26,16 @@
 			</ul>
 		</div>
 	</nav>
-
+	
+	<div class="well well-lg">
         <p>This is your profile, {{ user.email }}.</p>
-        <a href="/create">create new order</a>
+        <div><a href="/create">create new order</a></div>
+	<br>
         <p>Your Orders:</p>
         ID   Weight Check<br>
         {% for order in orders %}
         		{{order.id}} {{order.weight}} <a href="/order_info/?order_id={{order.id}}">查询</a><br>
         {% endfor %}
+	</div>
     </body>
 </html>

@@ -27,6 +27,7 @@
 	</nav>
         
 	<h1>更新快递单{{order_id}}</h1>
+	<div class="well well-lg">
         <form action="/order_update/" method="post">
             {% csrf_token %}
              <input type="hidden" name="order_id" value={{order_id}}><br>
@@ -35,5 +36,6 @@
 
             <input type="submit" value="提交">
         </form>    
+	</div>
     </body>
 </html>

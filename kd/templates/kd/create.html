@@ -26,9 +26,10 @@
 			</ul>
 		</div>
 	</nav>
-       
-        
-<h1>创建快递单</h1>
+       	
+	<div class="well well-lg">
+	<h3>创建快递单</h3>
+	<div class="panel-body">
         <form action="/create_order/" method="post">
             {% csrf_token %}
 	<div>
@@ -54,6 +55,9 @@
 	</div>
 
             <input type="submit" value="提交">
-        </form>    
+        </form>
+	
+	</div>    
+	</div>
     </body>
 </html>
