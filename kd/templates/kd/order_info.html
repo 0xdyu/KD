@@ -20,7 +20,8 @@
 		    <div class = "navbar-header"> 
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
-				<li class="acitve"><a href="#">首頁 </a></li>
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li><a href="/user_profile">Dashboard</a></li>
 				<li><a href="/accounts/logout">logout</a></li>
 			</ul>
 		</div>
@@ -31,7 +32,7 @@
         <p>Update Time: {{ update_time }}</p>
         <p>Status: {{ order_status }}</p>
         <p>Current Location: {{ curr_location }}</p>
-	<div><a href="/user_profile">返回 </a></div>
+	<div><a class="btn btn-primary" href="/user_profile">返回 </a></div>
 	</div>
 
     </body>

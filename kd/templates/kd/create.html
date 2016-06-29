@@ -21,13 +21,14 @@
 		    <div class = "navbar-header"> 
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
-				<li class="acitve"><a href="/user_profile">首頁 </a></li>
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li class="acitve"><a href="/user_profile">Dashboard</a></li>
 				<li><a href="/accounts/logout">logout</a></li>
 			</ul>
 		</div>
 	</nav>
        	
-	<div class="well well-lg">
+	<div>
 	<h3>创建快递单</h3>
 	<div class="panel-body">
         <form action="/create_order/" method="post">
@@ -39,7 +40,7 @@
             收件人公司: <input type="text" name="receiver_company_name"><br>
             收件人联系方式: <input type="text" name="receiver_phone_number"><br>
 	</div>
-	
+	<br>
 	<div>
             寄件人姓名: <input type="text" name="sender_name"><br>
             寄件人地址: <input type="text" name="sender_address"><br>
@@ -47,14 +48,14 @@
             寄件人公司: <input type="text" name="sender_company_name"><br>
             寄件人联系方式: <input type="text" name="sender_phone_number"><br>
 	</div>
-	
+	<br>
 	<div>
             重量: <input type="text" name="package_weight"><br>
             当前状态: <input type="text" name="package_current_status"><br>
             当前地点: <input type="text" name="package_current_location"><br>
 	</div>
 
-            <input type="submit" value="提交">
+            <input class="btn btn-primary" type="submit" value="提交">
         </form>
 	
 	</div>    
