@@ -11,6 +11,10 @@ def home(request):
     return render(request, 'kd/home.html')
 
 @csrf_protect
+def login(request):
+    return render(request, 'kd/login.html')
+
+@csrf_protect
 def user_profile(request):
     if request.user.is_authenticated()==False:
         return render(request, 'kd/home.html', {})

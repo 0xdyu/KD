@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^accounts/', include('users.urls'), name='account'),
     #url(r'^accounts/profile/$', TemplateView.as_view(template_name='profile.html'), name='user_profile'),
     url(r'^$', kd_views.home, name='home'),
+    url(r'^login/', kd_views.login, name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^user_profile/', kd_views.user_profile, name='user_profile'),
     url(r'^create/', kd_views.create, name='create'),
     url(r'^create_order/', kd_views.create_order, name='create_order'),
