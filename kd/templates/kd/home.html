@@ -14,12 +14,12 @@
     </head>
     
 	<body>
-	
+
 	<!-- Navigation Bar -->
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 		    <div class = "navbar-header"> 
-			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
+			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a></div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="#">首頁 </a></li>
 				{% if user.is_authenticated %}
@@ -31,12 +31,12 @@
 		</div>
 	</nav>
 
-        <div class="well well-lg">
+        <div class="well">
 	<p>请输入快递单号进行查询！</p>
 	<div class="form-group">
 		<form action="/search_order/" method="get">
 		    快递单号：<input type="text" name="order_id"><br>
-		    <input type="submit" value="提交">
+		    <input class="btn btn-primary" type="submit" value="提交">
 		</form>
 	</div>
 	</div>

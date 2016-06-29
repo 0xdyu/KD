@@ -22,20 +22,21 @@
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="/user_profile">首頁 </a></li>
-				<li><a href="/accounts/logout">logout</a></li>
+				<li><a href="/user_profile">Dashboard</a></li>
+				<li><a href="/accounts/logout">Logout</a></li>
 			</ul>
 		</div>
 	</nav>
-		<div class="container-fluid">
-	    	<li><a href="/order_update_call/?order_id={{order_id}}">更新订单</a></li>
-		<li><a href="/user_profile">back to account dashboard</a></li>
-		</div>
 	
 	<div class="well well-lg">
         <p>Order No. {{ order_id }}</p>
         <p>Update Time: {{ update_time }}</p>
         <p>Status: {{ order_status }}</p>
         <p>Current Location: {{ curr_location }}</p>
+	</div>
+	<div class="container-fluid">
+	   <a class="btn btn-primary" href="/order_update_call/?order_id={{order_id}}">更新订单</a>
+		
 	</div>
 
     </body>

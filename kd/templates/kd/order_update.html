@@ -20,13 +20,13 @@
 			<a class = "navbar-brand" href="#"> <h2>欢迎使用可达物流管理系统！ </h2></a></div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="/user_profile">首頁 </a></li>
-				<li><a href="/user_profile">back to account dashboard</a></li>
-				<li><a href="/accounts/logout">logout</a></li>
+				<li><a href="/user_profile">Dashboard</a></li>
+				<li><a href="/accounts/logout">Logout</a></li>
 			</ul>
 		</div>
 	</nav>
         
-	<h1>更新快递单{{order_id}}</h1>
+	<h3>更新快递单: {{order_id}}</h3>
 	<div class="well well-lg">
         <form action="/order_update/" method="post">
             {% csrf_token %}
