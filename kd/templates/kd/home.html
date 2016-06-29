@@ -22,7 +22,11 @@
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="#">首頁 </a></li>
-				<li><a href="/accounts/login">登录</a></li>
+				{% if user.is_authenticated %}
+					<li><a href="/user_profile/">my dashboard</a></li>
+				{% else %}
+					<li><a href="/accounts/login">登录</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</nav>
