@@ -32,9 +32,9 @@
         <div><a class="btn btn-primary" href="/create">create new order</a></div>
 	<br>
         <p>Your Orders:</p>
-        ID   Weight Check<br>
+        ID   发件人 收件人 包裹位置 包裹状态 订单更新日期 订单创建日期 <br>
         {% for order in orders %}
-        		{{order.id}} {{order.weight}} <a class="btn" href="/order_info/?order_id={{order.id}}">查询</a><br>
+        		<a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> {{order.id}} | {{order.order.sender.name}} | {{order.order.receiver.name}} | {{order.location}} | {{order.status}} | {{order.time}} |  {{order.order.create_time}}<br>
         {% endfor %}
 	</div>
     </body>

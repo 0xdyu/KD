@@ -3,10 +3,10 @@ from .models import EndUser, ShippingUser, Order, OrderStatus
 
 # Register your models here.
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'weight', 'shipping_user_id', 'sender_id', 'receiver_id', 'create_time', 'valid')
+    list_display = ('id', 'weight', 'shipping_user_id', 'sender',  'receiver',  'create_time')
 
 class OrderStatusAdmin(admin.ModelAdmin):
-	list_display = ('order_id', 'time', 'status', 'location', 'primKey')
+	list_display = ('order', 'id', 'time', 'status', 'location', 'primKey')
 
 class EndUserAdmin(admin.ModelAdmin):
 	list_display = ('user_id', 'name', 'phone_number', 'company_name', 'address', 'postcode')
