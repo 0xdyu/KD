@@ -27,16 +27,43 @@
 			</ul>
 		</div>
 	</nav>
-	
+
 	<div class="well well-lg">
-        <p>Order No. {{ order_id }}</p>
-        <p>Update Time: {{ update_time }}</p>
-        <p>Status: {{ order_status }}</p>
-        <p>Current Location: {{ curr_location }}</p>
+	<table class="table">
+   	<caption>Your Orders</caption>
+  	<thead>
+      	<tr>
+		<th>ID</th>
+		<th>发件人</th>
+		<th>发件人地址</th>
+		<th>收件人</th>
+		<th>收件人地址</th>
+		<th>包裹位置</th>
+		<th>包裹状态</th>
+		<th>订单更新日期</th>
+		<th>订单创建日期</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	<tr>
+        <td> {{ order_id }} </td>
+        <td> need to show object values{{order.order.sender.name}} </td>
+	<td> need to show object values{{order.order.sender.address}} </td>
+	<td> need to show object values{{order.order.receiver.name}} </td>
+	<td> need to show object values{{order.order.receiver.address}} </td>
+	<td> {{ curr_location }} </td>
+	<td> {{ order_status }} </td>
+	<td> {{ update_time }} </td>
+	<td> need to show object values{{order.order.create_time}} </td>
+    	</tr>
+      
+   </tbody>
+	</table>
 	</div>
+	
 	<div class="container-fluid">
-	   <a class="btn btn-primary" href="/order_update_call/?order_id={{order_id}}">更新订单</a>
-		
+	   <a class="btn btn-primary" href="/order_update_call/?order_id={{order_id}}">更新订单</a>	
 	</div>
 
     </body>
