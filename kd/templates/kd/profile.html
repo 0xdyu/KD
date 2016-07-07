@@ -31,11 +31,39 @@
         <p>This is your profile, {{ user.email }}.</p>
         <div><a class="btn btn-primary" href="/create">create new order</a></div>
 	<br>
-        <p>Your Orders:</p>
-        ID   发件人 收件人 包裹位置 包裹状态 订单更新日期 订单创建日期 <br>
-        {% for order in orders %}
-        		<a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> {{order.id}} | {{order.order.sender.name}} | {{order.order.receiver.name}} | {{order.location}} | {{order.status}} | {{order.time}} |  {{order.order.create_time}}<br>
-        {% endfor %}
+
+	<table class="table">
+   	<caption>Your Orders</caption>
+  	<thead>
+      	<tr>
+		<th>ID</th>
+		<th>发件人</th>
+		<th>包裹位置</th>
+		<th>包裹状态</th>
+		<th>订单更新日期</th>
+		<th>订单创建日期</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	<tr>
+	{% for order in orders %}
+        <td> {{order.id}} <a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> </td>
+        <td> {{order.order.sender.name}} </td>
+	<td> {{order.order.receiver.name}} </td>
+	<td> {{order.location}} </td>
+	<td> {{order.status}} </td>
+	<td> {{order.time}} </td>
+	<td> {{order.order.create_time}} </td>
+
+	{% endfor %}
+    	</tr>
+      
+   </tbody>
+	</table>
+
+
+       
 	</div>
     </body>
 </html>
