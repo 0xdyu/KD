@@ -5,6 +5,9 @@ from kd.models import Order, EndUser, ShippingUser, OrderStatus
 from django.shortcuts import get_object_or_404
 from random import randint
 import datetime
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
+import json
 
 # Create your views here.
 
@@ -25,6 +28,46 @@ def user_profile(request):
     objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
     return render(request, 'kd/profile.html', {'orders' : objects})
 
+def ajax_get_all_order(request):
+    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
+    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    return HttpResponse(__generate_json(objects))
+
+def ajax_get_inital_order(request):
+    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
+    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    filteredObjects = objects.filter(status='initial')
+    return HttpResponse(__generate_json(filteredObjects))
+
+def ajax_get_shipping_order(request):
+    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
+    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    filteredObjects = objects.filter(status='shipping')
+    return HttpResponse(__generate_json(filteredObjects))
+
+def ajax_get_delivered_order(request):
+    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
+    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    filteredObjects = objects.filter(status='delivered')
+    return HttpResponse(__generate_json(filteredObjects))
+
+def __generate_json(filteredObjects):
+    orders=[]
+    for entry in filteredObjects:
+        orders.append({'order_id' : entry.id, 
+            'sender' : entry.order.sender.name, 
+            'receiver' : entry.order.receiver.name,
+            'location' : entry.location,
+            'status' : entry.status,
+            'update_time' : entry.time.strftime('%Y/%m/%d'),
+            'create_time' : entry.order.create_time.strftime('%Y/%m/%d')}) 
+    qs_json=json.dumps(orders)
+    return qs_json
+
 @csrf_protect
 def search_order(request):
     if request.method == "GET":
@@ -32,7 +75,7 @@ def search_order(request):
         if OrderStatus.objects.filter(id=order_id).exists():
             objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
             return render(request, 'kd/order_info.html', 
-                {'id' : order_id, 
+                {'order_id' : order_id, 
                 'order_status' : objects.values('status')[0]['status'], 
                 'curr_location' : objects.values('location')[0]['location'],
                 'update_time' : objects.values('time')[0]['time']})
@@ -51,10 +94,8 @@ def order_info_insider(request):
         if OrderStatus.objects.filter(id=order_id).exists():
             objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
             return render(request, 'kd/order_info_insider.html', 
-                {'order_id' : order_id, 
-                'order_status' : objects.values('status')[0]['status'], 
-                'curr_location' : objects.values('location')[0]['location'],
-                'update_time' : objects.values('time')[0]['time']})
+                {'curStatus' : objects[0],
+                'objects' : objects})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
@@ -147,7 +188,7 @@ def __generate_user_id():
 # check the existing about end user and create the end user if this is a new end user
 def __check_enduser_exists(user_name, phone_number, company_name, address, postcode):
     if EndUser.objects.filter(name=user_name, phone_number=phone_number).exists():
-            return EndUser.objects.get(name=user_name, phone_number=phone_number).user_id;
+            return EndUser.objects.get(name=user_name, phone_number=phone_number);
     user_id = __generate_user_id()
     return EndUser.objects.create(user_id=user_id,
             name=user_name,

@@ -11,6 +11,146 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
 	<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+
+
+
+	<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $('#all').click(function(){
+        $.ajax({
+		    type: "GET",
+		    url: "/ajax_all/",
+		    dataType: "json",
+		    success: function (data) {
+		    	var content = '<table class="table" id="dashboard">';
+		    	content += "<caption>订单列表</caption>";
+		    	content += "<thead>";
+		    	content += "<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>"
+		    	
+		  		content += "</thead>"
+		      	content += "<tbody>";
+		        $.each(data, function (varvalue, order){
+		            //console.log(order['order_id']);
+		          	//content += '<tr id="' + 'dashboard' + '">';
+		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
+		          	content += '<td>' + order['order_id'] + '</td>';
+		          	content += '<td>' + order['sender'] + '</td>';
+		          	content += '<td>' + order['receiver'] + '</td>';
+		          	content += '<td>' + order['location'] + '</td>';
+		          	content += '<td>' + order['status'] + '</td>';
+		          	content += '<td>' + order['create_time'] + '</td>';
+		          	content += '<td>' + order['update_time'] + '</td>';
+		          	content += '</tr>';
+		        });  
+		        content += "</tbody>"
+		        content += "</table>"
+		        $('#dashboard').html(content);
+		    }
+		});
+      })
+      $('#inital').click(function(){
+        $.ajax({
+		    type: "GET",
+		    url: "/ajax_inital/",
+		    dataType: "json",
+		    success: function (data) {
+		    	var content = '<table class="table" id="dashboard">';
+		    	content += "<caption>订单列表</caption>";
+		    	content += "<thead>";
+		    	content += "<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>"
+		    	
+		  		content += "</thead>"
+		      	content += "<tbody>";
+		        $.each(data, function (varvalue, order){
+		            //console.log(order['order_id']);
+		          	//content += '<tr id="' + 'dashboard' + '">';
+		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
+		          	content += '<td>' + order['order_id'] + '</td>';
+		          	content += '<td>' + order['sender'] + '</td>';
+		          	content += '<td>' + order['receiver'] + '</td>';
+		          	content += '<td>' + order['location'] + '</td>';
+		          	content += '<td>' + order['status'] + '</td>';
+		          	content += '<td>' + order['create_time'] + '</td>';
+		          	content += '<td>' + order['update_time'] + '</td>';
+		          	content += '</tr>';
+		        });  
+		        content += "</tbody>"
+		        content += "</table>"
+		        $('#dashboard').html(content);
+		    }
+		});
+      })
+      $('#shipping').click(function(){
+          $.ajax({
+		    type: "GET",
+		    url: "/ajax_shipping/",
+		    dataType: "json",
+		    success: function (data) {
+		    	var content = '<table class="table" id="dashboard">';
+		    	content += "<caption>订单列表</caption>";
+		    	content += "<thead>";
+		    	content += "<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>"
+		    	
+		  		content += "</thead>"
+		      	content += "<tbody>";
+		        $.each(data, function (varvalue, order){
+		            //console.log(order['order_id']);
+		          	//content += '<tr id="' + 'dashboard' + '">';
+		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
+		          	content += '<td>' + order['order_id'] + '</td>';
+		          	content += '<td>' + order['sender'] + '</td>';
+		          	content += '<td>' + order['receiver'] + '</td>';
+		          	content += '<td>' + order['location'] + '</td>';
+		          	content += '<td>' + order['status'] + '</td>';
+		          	content += '<td>' + order['create_time'] + '</td>';
+		          	content += '<td>' + order['update_time'] + '</td>';
+		          	content += '</tr>';
+		        });  
+		        content += "</tbody>"
+		        content += "</table>"
+		        $('#dashboard').html(content);
+		    }
+		});
+      })
+      $('#delivered').click(function(){
+          $.ajax({
+		    type: "GET",
+		    url: "/ajax_delivered/",
+		    dataType: "json",
+		    success: function (data) {
+		    	var content = '<table class="table" id="dashboard">';
+		    	content += "<caption>订单列表</caption>";
+		    	content += "<thead>";
+		    	content += "<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>";
+		    	
+		  		content += "</thead>";
+
+		  		content += "<tbody>";
+		      	
+		        $.each(data, function (varvalue, order){
+		            //console.log(order['order_id']);
+		          	//content += '<tr id="' + 'dashboard' + '">';
+		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
+		          	content += '<td>' + order['order_id'] + '</td>';
+		          	content += '<td>' + order['sender'] + '</td>';
+		          	content += '<td>' + order['receiver'] + '</td>';
+		          	content += '<td>' + order['location'] + '</td>';
+		          	content += '<td>' + order['status'] + '</td>';
+		          	content += '<td>' + order['create_time'] + '</td>';
+		          	content += '<td>' + order['update_time'] + '</td>';
+		          	content += '</tr>';
+		        });  
+		        content += "</tbody>"
+		        content += "</table>"
+		        $('#dashboard').html(content);
+		    }
+		});
+      })
+    });
+
+</script>
+
     </head>
     
 	<body>
@@ -28,14 +168,21 @@
 	</nav>
 	
 	<div class="well well-lg">
-        <p>欢迎您,  {{ user.email }}.</p>
-        <div><a class="btn btn-primary" href="/create">创建新订单</a></div>
+        <p>This is your profile, {{ user.email }}.</p>
+        <div><a class="btn btn-primary" href="/create">create new order</a></div>
 	<br>
-
-	<table class="table">
-   	<caption>您的订单</caption>
+	</div>
+	<div > 
+		<a class="btn btn-primary" id="all">显示所有订单 </a>
+		<a class="btn btn-primary" id="inital">显示初始订单 </a>
+		<a class="btn btn-primary" id="shipping">显示转运中订单 </a>
+		<a class="btn btn-primary" id="delivered">显示已完成订单 </a>
+	</div>
+	<table class="table" id="dashboard">
+   	<caption>订单列表</caption>
   	<thead>
       	<tr>
+      	<th> </th>
 		<th>ID</th>
 		<th>发件人</th>
 		<th>收件人</th>
@@ -47,24 +194,20 @@
    	</thead>
 
 	<tbody>
-	<tr>
 	{% for order in orders %}
-        <td> {{order.id}} <a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> </td>
-        <td> {{order.order.sender.name}} </td>
-	<td> {{order.order.receiver.name}} </td>
-	<td> {{order.location}} </td>
-	<td> {{order.status}} </td>
-	<td> {{order.time}} </td>
-	<td> {{order.order.create_time}} </td>
-
+		<tr>
+        <td> <a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> </td>
+        <td>{{order.id}}</td>
+        <td>{{order.order.sender.name}}</td>
+		<td>{{order.order.receiver.name}}</td>
+		<td>{{order.location}}</td>
+		<td>{{order.status}}</td>
+		<td>{{order.time}}</td>
+		<td>{{order.order.create_time}}</td>
+		</tr>
 	{% endfor %}
-    	</tr>
       
    </tbody>
 	</table>
-
-
-       
-	</div>
     </body>
 </html>

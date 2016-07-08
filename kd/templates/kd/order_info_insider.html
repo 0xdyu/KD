@@ -47,23 +47,49 @@
 
 	<tbody>
 	<tr>
-        <td> {{ order_id }} </td>
-        <td> need to show object values{{order.order.sender.name}} </td>
-	<td> need to show object values{{order.order.sender.address}} </td>
-	<td> need to show object values{{order.order.receiver.name}} </td>
-	<td> need to show object values{{order.order.receiver.address}} </td>
-	<td> {{ curr_location }} </td>
-	<td> {{ order_status }} </td>
-	<td> {{ update_time }} </td>
-	<td> need to show object values{{order.order.create_time}} </td>
-    	</tr>
+        <td> {{curStatus.id }} </td>
+        <td> {{curStatus.order.sender.name}} </td>
+		<td> {{curStatus.order.sender.address}} </td>
+		<td> {{curStatus.order.receiver.name}} </td>
+		<td> {{curStatus.order.receiver.address}} </td>
+		<td> {{ curStatus.location }} </td>
+		<td> {{ curStatus.status }} </td>
+		<td> {{ curStatus.time }} </td>
+		<td> {{curStatus.order.create_time}} </td>
+    </tr>
       
    </tbody>
 	</table>
+
+	</div>
+
+	<div class="well well-lg">
+	<table class="table">
+   	<caption>状态更新查询</caption>
+  	<thead>
+      	<tr>
+		<th>更新时间</th>
+		<th>地点</th>
+		<th>状态</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	{% for statusEntry in objects %}
+		<tr>
+        <td>{{statusEntry.time}}</td>
+        <td>{{statusEntry.location}}</td>
+		<td>{{statusEntry.status}}</td>
+		</tr>
+	{% endfor %}
+      
+   </tbody>
+	</table>
+	
 	</div>
 	
 	<div class="container-fluid">
-	   <a class="btn btn-primary" href="/order_update_call/?order_id={{order_id}}">更新订单</a>	
+	   <a class="btn btn-primary" href="/order_update_call/?order_id={{curStatus.id}}">更新订单</a>	
 	</div>
 
     </body>

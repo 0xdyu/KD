@@ -32,6 +32,10 @@ urlpatterns = [
     url(r'^search_order/', kd_views.search_order, name='search_order'),
     url(r'^order_info/', kd_views.order_info_insider, name='order_info'),
     url(r'^order_update_call/', kd_views.order_update_call, name='order_update_call'),
-    url(r'^order_update/', kd_views.order_update, name='order_update')
+    url(r'^order_update/', kd_views.order_update, name='order_update'),
+    url(r'^ajax_inital/$', kd_views.ajax_get_inital_order, name='ajax-inital'),
+    url(r'^ajax_shipping/$', kd_views.ajax_get_shipping_order, name='ajax-shipping'),
+    url(r'^ajax_delivered/$', kd_views.ajax_get_delivered_order, name='ajax-delivered'),
+    url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all')
 ]
 
