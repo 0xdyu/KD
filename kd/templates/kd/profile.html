@@ -22,18 +22,18 @@
 			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="/">首頁 </a></li>
-				<li><a href="/logout">logout</a></li>
+				<li><a href="/logout">登出</a></li>
 			</ul>
 		</div>
 	</nav>
 	
 	<div class="well well-lg">
-        <p>This is your profile, {{ user.email }}.</p>
-        <div><a class="btn btn-primary" href="/create">create new order</a></div>
+        <p>欢迎您,  {{ user.email }}.</p>
+        <div><a class="btn btn-primary" href="/create">创建新订单</a></div>
 	<br>
 
 	<table class="table">
-   	<caption>Your Orders</caption>
+   	<caption>您的订单</caption>
   	<thead>
       	<tr>
 		<th>ID</th>

@@ -23,7 +23,7 @@
 			<ul class="nav navbar-nav">  
 				<li class="acitve"><a href="#">首頁 </a></li>
 				{% if user.is_authenticated %}
-					<li><a href="/user_profile/">my dashboard</a></li>
+					<li><a href="/user_profile/">仪表盘</a></li>
 				{% else %}
 					<li><a href="/login">登录</a></li>
 				{% endif %}
