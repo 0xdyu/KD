@@ -165,7 +165,7 @@ def create_order(request):
             primKey=str(id)+str(datetime.datetime.now())
             )
         
-    return render(request, 'kd/create.html', {}) 
+    return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
 
 # Generate 10 digit random nubmer for order id, return string
 def __generate_order_id():
