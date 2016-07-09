@@ -24,6 +24,7 @@ class Order(models.Model):
     #receiver_id = models.CharField(null=True,max_length=10, verbose_name=u"收件人")
     receiver = models.ForeignKey(EndUser, on_delete=models.CASCADE,  verbose_name=u"收件人", related_name="receiver_instance")
     create_time = models.DateTimeField(auto_now_add=True,verbose_name=u"下单时间")
+    price = models.FloatField(null=True,blank=True,verbose_name=u"价格")
     def __unicode__(self):
         return self.id
 

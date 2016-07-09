@@ -47,9 +47,12 @@
   	<thead>
       	<tr>
 		<th>订单号</th>
+		<th>订单价格</th>
 		<th>发件人</th>
+		<th>发件人联系电话</th>
 		<th>发件人地址</th>
 		<th>收件人</th>
+		<th>收件人联系电话</th>
 		<th>收件人地址</th>
 		<th>包裹位置</th>
 		<th>包裹状态</th>
@@ -61,9 +64,12 @@
 	<tbody>
 	<tr>
         <td>{{curStatus.id }}</td>
+        <td>{{curStatus.order.price}}</td>
         <td>{{curStatus.order.sender.name}}</td>
+        <td>{{curStatus.order.sender.phone_number}}</td>
 		<td>{{curStatus.order.sender.address}}</td>
 		<td>{{curStatus.order.receiver.name}}</td>
+		<td>{{curStatus.order.receiver.phone_number}}</td>
 		<td>{{curStatus.order.receiver.address}}</td>
 		<td>{{ curStatus.location }}</td>
 		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{curStatus.status}}'))</script></td>

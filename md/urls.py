@@ -36,6 +36,9 @@ urlpatterns = [
     url(r'^ajax_inital/$', kd_views.ajax_get_inital_order, name='ajax-inital'),
     url(r'^ajax_shipping/$', kd_views.ajax_get_shipping_order, name='ajax-shipping'),
     url(r'^ajax_delivered/$', kd_views.ajax_get_delivered_order, name='ajax-delivered'),
-    url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all')
-]
+    url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all'),
+    url(r'^password_reset_confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+            kd_views.reset_confirm, name='reset_confirm'),
+    url(r'^reset/$', kd_views.reset, name='reset')
+    ]
 

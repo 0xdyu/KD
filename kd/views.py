@@ -8,6 +8,9 @@ import datetime
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json
+from django.core.urlresolvers import reverse
+from django.contrib.auth.views import password_reset, password_reset_confirm
+
 
 # Create your views here.
 
@@ -25,33 +28,33 @@ def user_profile(request):
     #objects=Order.objects.filter(shipping_user_id=request.user.email)
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
     return render(request, 'kd/profile.html', {'orders' : objects})
 
 def ajax_get_all_order(request):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
     return HttpResponse(__generate_json(objects))
 
 def ajax_get_inital_order(request):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
     filteredObjects = objects.filter(status='initial')
     return HttpResponse(__generate_json(filteredObjects))
 
 def ajax_get_shipping_order(request):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
     filteredObjects = objects.filter(status='shipping')
     return HttpResponse(__generate_json(filteredObjects))
 
 def ajax_get_delivered_order(request):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders])
+    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
     filteredObjects = objects.filter(status='delivered')
     return HttpResponse(__generate_json(filteredObjects))
 
@@ -63,8 +66,8 @@ def __generate_json(filteredObjects):
             'receiver' : entry.order.receiver.name,
             'location' : entry.location,
             'status' : entry.status,
-            'update_time' : entry.time.strftime('%Y/%m/%d'),
-            'create_time' : entry.order.create_time.strftime('%Y/%m/%d')}) 
+            'update_time' : entry.time.strftime('%Y/%m/%d/') + str(entry.time.hour) + ':' + str(entry.time.minute),
+            'create_time' : entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
     qs_json=json.dumps(orders)
     return qs_json
 
@@ -151,6 +154,7 @@ def create_order(request):
             request.POST['receiver_address'], 
             request.POST['receiver_postcode'])
         curOrder = Order.objects.create(id=id,
+                price=request.POST['package_price'],
                 weight=request.POST['package_weight'],
                 shipping_user_id=request.user.email,
                 sender=sender,
@@ -166,6 +170,18 @@ def create_order(request):
             )
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
+
+def reset_confirm(request, uidb36=None, token=None):
+    return password_reset_confirm(request, template_name='kd/password_reset_confirmation.html',
+        uidb36=uidb36, token=token, post_reset_redirect=reverse('login'))
+
+def reset(request):
+    return password_reset(request, template_name='kd/password_reset_form.html',
+        email_template_name='kd/password_reset_email.html',
+        subject_template_name='kd/password_reset_subject.txt',
+        post_reset_redirect=reverse('login'))
+
+########## helper function ###########
 
 # Generate 10 digit random nubmer for order id, return string
 def __generate_order_id():

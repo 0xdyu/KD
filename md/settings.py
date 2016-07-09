@@ -157,9 +157,9 @@ LOGIN_REDIRECT_URL = 'user_profile'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp.tuweizhong.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'mail@tuweizhong.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mail@gmail.com'
 EMAIL_HOST_PASSWORD = 'xxxx'
-DEFAULT_FROM_EMAIL = 'mail@tuweizhong.com'
+DEFAULT_FROM_EMAIL = 'mail@gmail.com'
 #  ---------------------------------------------------------
