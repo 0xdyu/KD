@@ -9,7 +9,7 @@ class EndUser(models.Model):
     user_id = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=50,verbose_name=u"姓名")
     phone_number = models.CharField(max_length=50,verbose_name=u"联系方式")
-    company_name = models.CharField(max_length=50,verbose_name=u"公司名")
+    company_name = models.CharField(null=True,blank=True,max_length=50,verbose_name=u"公司名")
     address = models.CharField(null=True, max_length=50,verbose_name=u"地址")
     postcode = models.CharField(max_length=50,verbose_name=u"邮政编码")
     def __unicode__(self):

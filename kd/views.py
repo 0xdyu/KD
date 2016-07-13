@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-  
+
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
@@ -142,6 +144,9 @@ def create_order(request):
     if request.user.is_authenticated()==False:
         return render(request, 'kd/home.html', {})
     if request.method == "POST":
+        error_items = __form_validator(request.POST)
+        if len(error_items) != 0:
+            return render(request, 'kd/order_create_failure.html', {'error_items' : error_items})
         id = __generate_order_id()
         sender=__check_enduser_exists(request.POST['sender_name'], 
             request.POST['sender_phone_number'], 
@@ -213,3 +218,27 @@ def __check_enduser_exists(user_name, phone_number, company_name, address, postc
             address=address,
             postcode=postcode
             );
+
+# Check whether must filled in items are not empty
+def __form_validator(form):
+    must_filled_items = ['sender_name',
+                         'sender_phone_number',
+                         'sender_address',
+                         'sender_postcode',
+                         'receiver_name',
+                         'receiver_phone_number',
+                         'receiver_address',
+                         'receiver_phone_number',]
+    en_to_cn = {'sender_name' : u"寄件人姓名",
+                'sender_phone_number' : u"寄件人联系方式",
+                'sender_address' : u"寄件人地址",
+                'sender_postcode' : u"寄件人邮编",
+                'receiver_name' : u"收件人姓名",
+                'receiver_phone_number' : u"收件人联系方式",
+                'receiver_address' : u"收件人地址",
+                'receiver_phone_number' : "收件人联系方式"}
+    error_items = []
+    for item in must_filled_items:
+        if not form[item]:
+            error_items.append(en_to_cn[item])
+    return error_items
