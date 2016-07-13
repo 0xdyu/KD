@@ -10,6 +10,7 @@ import datetime
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json
+import re
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 
@@ -144,9 +145,9 @@ def create_order(request):
     if request.user.is_authenticated()==False:
         return render(request, 'kd/home.html', {})
     if request.method == "POST":
-        error_items = __form_validator(request.POST)
-        if len(error_items) != 0:
-            return render(request, 'kd/order_create_failure.html', {'error_items' : error_items})
+        empty_items, error_items = __form_validator(request.POST)
+        if len(empty_items) != 0 or len(error_items) != 0: 
+            return render(request, 'kd/order_create_failure.html', {'error_items' : error_items, 'empty_items' : empty_items})
         id = __generate_order_id()
         sender=__check_enduser_exists(request.POST['sender_name'], 
             request.POST['sender_phone_number'], 
@@ -228,7 +229,10 @@ def __form_validator(form):
                          'receiver_name',
                          'receiver_phone_number',
                          'receiver_address',
-                         'receiver_phone_number',]
+                         'receiver_phone_number',
+                         'package_price',
+                         'package_weight',
+                         ]
     en_to_cn = {'sender_name' : u"寄件人姓名",
                 'sender_phone_number' : u"寄件人联系方式",
                 'sender_address' : u"寄件人地址",
@@ -236,9 +240,22 @@ def __form_validator(form):
                 'receiver_name' : u"收件人姓名",
                 'receiver_phone_number' : u"收件人联系方式",
                 'receiver_address' : u"收件人地址",
-                'receiver_phone_number' : "收件人联系方式"}
+                'receiver_phone_number' : u"收件人联系方式",
+                'package_price' : u"订单价格",
+                'package_weight' : u"重量"}
+    empty_items = []
     error_items = []
     for item in must_filled_items:
         if not form[item]:
-            error_items.append(en_to_cn[item])
-    return error_items
+            empty_items.append(en_to_cn[item])
+
+    try:
+        float(form['package_price'])
+    except ValueError:
+         error_items.append(en_to_cn['package_price'])
+    try:
+        float(form['package_weight'])
+    except ValueError:
+         error_items.append(en_to_cn['package_weight'])
+
+    return empty_items, error_items

@@ -28,12 +28,23 @@
 	</nav>
         
 	<div class="well well-lg">
+	{% if empty_items %}
 	<p>订单创建失败！以下为必填项： </p>
+	<ul>
+		{% for item in empty_items %}
+		<li>{{item}}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
+	{% if error_items %}
+	<p>订单创建失败！以下项输入无效： </p>
 	<ul>
 		{% for item in error_items %}
 		<li>{{item}}</li>
 		{% endfor %}
 	</ul>
+	{% endif %}
 	
 	<a href="/create">返回</a>
     <a href="/user_profile">回到首页</a>
