@@ -18,3 +18,8 @@ Shipping User features:
 Transport User:
 1. Register
 2. Edit Order under their company
+
+Order Status：
+•	已接单
+•	正在运输中
+•	已到达目的地
