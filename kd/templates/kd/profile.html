@@ -149,16 +149,18 @@
 	</nav>
 	
 	<div class="well well-lg">
-        <p>This is your profile, {{ user.email }}.</p>
+        <p>欢迎您， {{ user.email }}</p>
         <div><a class="btn btn-primary" href="/create">创建新订单</a> </div>
 	<br>
 	</div>
+	
 	<div > 
 		<a class="btn btn-primary" id="all">显示所有订单 </a>
 		<a class="btn btn-primary" id="inital">显示初始订单 </a>
 		<a class="btn btn-primary" id="shipping">显示转运中订单 </a>
 		<a class="btn btn-primary" id="delivered">显示已完成订单 </a>
 	</div>
+
 	<table class="table" id="dashboard">
    	<!-- <caption>订单列表</caption>
   	<thead>
