@@ -162,35 +162,7 @@
 	</div>
 
 	<table class="table" id="dashboard">
-   	<!-- <caption>订单列表</caption>
-  	<thead>
-      	<tr>
-      	<th> </th>
-		<th>ID</th>
-		<th>发件人</th>
-		<th>收件人</th>
-		<th>包裹位置</th>
-		<th>包裹状态</th>
-		<th>订单更新日期</th>
-		<th>订单创建日期</th>
-     	</tr>
-   	</thead>
 
-	<tbody>
-	{% for order in orders %}
-		<tr>
-        <td> <a class="btn" href="/order_info/?order_id={{order.id}}">查询</a> </td>
-        <td>{{order.id}}</td>
-        <td>{{order.order.sender.name}}</td>
-		<td>{{order.order.receiver.name}}</td>
-		<td>{{order.location}}</td>
-		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{order.status}}'))</script></td>
-		<td><script type="text/javascript">document.write(convertDateTime('{{order.time}}'))</script></td>
-		<td><script type="text/javascript">document.write(convertDateTime('{{order.order.create_time}}'))</script></td>
-		</tr>
-	{% endfor %}
-      
-   </tbody> -->
 	</table>
     </body>
 </html>
