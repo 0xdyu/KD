@@ -16,7 +16,34 @@
 
 	<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
+		function formatDateTime(time) {
+			var tDate = new Date(time);
+			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
+			var date = checkDDMMDigite(tDate.getDate()+"");
+			var hour = checkDDMMDigite(tDate.getHours()+"");
+			var min = checkDDMMDigite(tDate.getMinutes()+"");
+			var curDate = tDate.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + min;
+			return curDate;
+		}
+		function checkDDMMDigite(tt) {
+			if (tt.length == 1) {
+				tt = "0" + tt;
+			}
+			return tt;
+		}
+	</script>
+	<script>
 	    $(document).ready(function(){
+	      $.ajax({
+			    type: "GET",
+			    url: "/ajax_all/",
+			    dataType: "json",
+			    success: function (data) {
+			    	var content = generateTable(data);
+			        $('#dashboard').html(content);
+			    }
+			}
+	      	);
 	      $('#all').click(function(){
 	        $.ajax({
 			    type: "GET",
@@ -74,16 +101,14 @@
 		  		content += "<tbody>";
 		      	
 		        $.each(data, function (varvalue, order){
-		            //console.log(order['order_id']);
-		          	//content += '<tr id="' + 'dashboard' + '">';
 		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
 		          	content += '<td>' + order['order_id'] + '</td>';
 		          	content += '<td>' + order['sender'] + '</td>';
 		          	content += '<td>' + order['receiver'] + '</td>';
 		          	content += '<td>' + order['location'] + '</td>';
 		          	content += '<td>' + orderStatusConvertChinese(order['status']) + '</td>';
-		          	content += '<td>' + order['create_time'] + '</td>';
-		          	content += '<td>' + order['update_time'] + '</td>';
+		          	content += '<td>' + formatDateTime(order['update_time']) + '</td>';
+		          	content += '<td>' + formatDateTime(order['create_time']) + '</td>';
 		          	content += '</tr>';
 		        });  
 		        content += "</tbody>";
@@ -135,7 +160,7 @@
 		<a class="btn btn-primary" id="delivered">显示已完成订单 </a>
 	</div>
 	<table class="table" id="dashboard">
-   	<caption>订单列表</caption>
+   	<!-- <caption>订单列表</caption>
   	<thead>
       	<tr>
       	<th> </th>
@@ -158,12 +183,12 @@
 		<td>{{order.order.receiver.name}}</td>
 		<td>{{order.location}}</td>
 		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{order.status}}'))</script></td>
-		<td>{{order.time}}</td>
-		<td>{{order.order.create_time}}</td>
+		<td><script type="text/javascript">document.write(convertDateTime('{{order.time}}'))</script></td>
+		<td><script type="text/javascript">document.write(convertDateTime('{{order.order.create_time}}'))</script></td>
 		</tr>
 	{% endfor %}
       
-   </tbody>
+   </tbody> -->
 	</table>
     </body>
 </html>

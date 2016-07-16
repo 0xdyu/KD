@@ -32,6 +32,7 @@ def user_profile(request):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
     objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
+
     return render(request, 'kd/profile.html', {'orders' : objects})
 
 def ajax_get_all_order(request):
@@ -69,8 +70,8 @@ def __generate_json(filteredObjects):
             'receiver' : entry.order.receiver.name,
             'location' : entry.location,
             'status' : entry.status,
-            'update_time' : entry.time.strftime('%Y/%m/%d/') + str(entry.time.hour) + ':' + str(entry.time.minute),
-            'create_time' : entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
+            'update_time' : str(entry.time),#entry.time.strftime('%Y/%m/%d/') + str(entry.time.hour) + ':' + str(entry.time.minute),
+            'create_time' : str(entry.order.create_time) })#entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
     qs_json=json.dumps(orders)
     return qs_json
 
@@ -84,7 +85,7 @@ def search_order(request):
                 {'order_id' : order_id, 
                 'order_status' : objects.values('status')[0]['status'], 
                 'curr_location' : objects.values('location')[0]['location'],
-                'update_time' : objects.values('time')[0]['time']})
+                'update_time' : str(objects.values('time')[0]['time'])})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
@@ -99,9 +100,18 @@ def order_info_insider(request):
         order_id = request.GET['order_id']
         if OrderStatus.objects.filter(id=order_id).exists():
             objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
+            status = []
+            for o in objects:
+            	status.append({
+            		'status' : o.status,
+            		'location' : o.location,
+            		'time' : str(o.time)
+            		})
             return render(request, 'kd/order_info_insider.html', 
                 {'curStatus' : objects[0],
-                'objects' : objects})
+                'curStatus_time': str(objects[0].time),
+                'create_time' : str(objects[0].order.create_time),
+                'objects' : status})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})

@@ -24,6 +24,23 @@
 			}
 		}
 	</script>
+	<script>
+		function formatDateTime(time) {
+			var tDate = new Date(time);
+			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
+			var date = checkDDMMDigite(tDate.getDate()+"");
+			var hour = checkDDMMDigite(tDate.getHours()+"");
+			var min = checkDDMMDigite(tDate.getMinutes()+"");
+			var curDate = tDate.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + min;
+			return curDate;
+		}
+		function checkDDMMDigite(tt) {
+			if (tt.length == 1) {
+				tt = "0" + tt;
+			}
+			return tt;
+		}
+	</script>
     </head>
     
 	<body>
@@ -73,8 +90,8 @@
 		<td>{{curStatus.order.receiver.address}}</td>
 		<td>{{ curStatus.location }}</td>
 		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{curStatus.status}}'))</script></td>
-		<td>{{ curStatus.time }}</td>
-		<td>{{curStatus.order.create_time}}</td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{curStatus_time}}'))</script></td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{create_time}}'))</script></td>
     </tr>
       
    </tbody>
@@ -96,7 +113,7 @@
 	<tbody>
 	{% for statusEntry in objects %}
 		<tr>
-        <td>{{statusEntry.time}}</td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{statusEntry.time}}'))</script></td>
         <td>{{statusEntry.location}}</td>
 		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{statusEntry.status}}'))</script></td>
 		</tr>
