@@ -169,9 +169,15 @@ def create_order(request):
             request.POST['receiver_company_name'], 
             request.POST['receiver_address'], 
             request.POST['receiver_postcode'])
+        price = 0
+        if not request.POST['package_price'] == '':
+            price = request.POST['package_price']
+        weight = 0
+        if not request.POST['package_weight'] == '':
+            weight = request.POST['package_weight']
         curOrder = Order.objects.create(id=id,
-                price=request.POST['package_price'],
-                weight=request.POST['package_weight'],
+                price=price,
+                weight=weight,
                 shipping_user_id=request.user.email,
                 sender=sender,
                 receiver=receiver,
@@ -234,38 +240,20 @@ def __check_enduser_exists(user_name, phone_number, company_name, address, postc
 def __form_validator(form):
     must_filled_items = ['sender_name',
                          'sender_phone_number',
-                         'sender_address',
-                         'sender_postcode',
                          'receiver_name',
                          'receiver_phone_number',
-                         'receiver_address',
-                         'receiver_phone_number',
-                         'package_price',
-                         'package_weight',
+                         'receiver_address'
                          ]
     en_to_cn = {'sender_name' : u"寄件人姓名",
                 'sender_phone_number' : u"寄件人联系方式",
-                'sender_address' : u"寄件人地址",
-                'sender_postcode' : u"寄件人邮编",
                 'receiver_name' : u"收件人姓名",
                 'receiver_phone_number' : u"收件人联系方式",
-                'receiver_address' : u"收件人地址",
-                'receiver_phone_number' : u"收件人联系方式",
-                'package_price' : u"订单价格",
-                'package_weight' : u"重量"}
+                'receiver_address' : u"收件人地址"}
     empty_items = []
     error_items = []
     for item in must_filled_items:
         if not form[item]:
             empty_items.append(en_to_cn[item])
 
-    try:
-        float(form['package_price'])
-    except ValueError:
-         error_items.append(en_to_cn['package_price'])
-    try:
-        float(form['package_weight'])
-    except ValueError:
-         error_items.append(en_to_cn['package_weight'])
 
     return empty_items, error_items
