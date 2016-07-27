@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	{% load staticfiles %}
+        <title>可达物流管理系统</title>
+	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<!-- 引入 Bootstrap -->
+	<link href="http://apps.bdimg.com/libs/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+	<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+    </head>
+    
+	<body>
+	
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		    <div class = "navbar-header"> 
+			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
+			<ul class="nav navbar-nav">  
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li class="acitve"><a href="/user_profile">仪表盘</a></li>
+				<li><a href="/logout">登出</a></li>
+			</ul>
+		</div>
+	</nav>
+       	
+	<div>
+		<h3>创建快递单</h3>
+		<h4>(*)为必填项</h4>
+		<div class="panel-body">
+			<form action="/create_order/" method="post">
+		    	{% csrf_token %}
+		<h4>收件人信息</h4>
+		<div>
+		   	收件人姓名(*): <input type="text" name="receiver_name"> 
+			收件人联系方式(*): <input type="text" name="receiver_phone_number"><br>
+		    	收件人地址(*): <input type="text" name="receiver_address"><br>
+		    	收件人邮编: <input type="text" name="receiver_postcode">
+		</div>
+		<br>
+	
+		<h4>寄件人信息</h4>
+		<div>
+			寄件人姓名(*): <input type="text" name="sender_name">
+			寄件人联系方式(*): <input type="text" name="sender_phone_number"><br>
+			寄件人地址(*): <input type="text" name="sender_address"> 
+			寄件人邮编: <input type="text" name="sender_postcode"><br>
+		</div>
+		<br>
+		
+		<h4>包裹信息</h4>
+		<div>
+		    	包裹重量: <input type="text" name="package_weight" value="（千克）"><br>
+			寄送物品：<input type="text" ><br> <!-- name="package_description"-->
+		</div>
+		<br>
+		<input class="btn btn-primary" type="submit" value="提交">
+		</form>
+	
+		</div>    
+		</div>
+    	</body>
+</html>
