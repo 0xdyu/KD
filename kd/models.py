@@ -38,6 +38,34 @@ class OrderStatus(models.Model):
     def __unicode__(self):
         return self.order_id
 
+class Quote(models.Model):
+    id = models.CharField(max_length=10, primary_key=True)
+    weight = models.FloatField(null=True,blank=True,verbose_name=u"重量")
+    sender_address = models.CharField(null=True, max_length=50,verbose_name=u"发货地址")
+    receiver_address = models.CharField(null=True, max_length=50,verbose_name=u"收货地址")
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name=u"下单时间")
+    height = models.FloatField(null=True,blank=True,verbose_name=u"高度")
+    width = models.FloatField(null=True,blank=True,verbose_name=u"宽度")
+    length = models.FloatField(null=True,blank=True,verbose_name=u"长度")
+    sender_info = models.ForeignKey(EndUser, on_delete=models.CASCADE, verbose_name=u"客户", related_name="sender_info")
+    notes = models.CharField(null=True, max_length=500,verbose_name=u"备注")
+    def __unicode__(self):
+        return self.id
+
+class QuoteAssignShippingUser(models.Model):
+    quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
+    shipping_user_id = models.CharField(null=True, max_length=50, verbose_name=u"寄送人邮箱")
+    primKey= models.CharField(max_length=100, primary_key=True)
+    def __unicode__(self):
+        return self.id
+
+class QuoteBid(models.Model):
+    quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
+    shipping_user_id = models.CharField(null=True, max_length=50, verbose_name=u"寄送人邮箱")
+    bid_price = models.FloatField(null=True,blank=True,verbose_name=u"价格")
+    primKey= models.CharField(max_length=100, primary_key=True)
+    def __unicode__(self):
+        return self.id
 
 class ShippingUser(models.Model):
     user_id = models.CharField(max_length=10, primary_key=True)

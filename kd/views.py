@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
-from kd.models import Order, EndUser, ShippingUser, OrderStatus
+from kd.models import Order, EndUser, ShippingUser, OrderStatus, Quote, QuoteAssignShippingUser, QuoteBid
 from django.shortcuts import get_object_or_404
 from random import randint
 import datetime
@@ -193,6 +193,57 @@ def create_order(request):
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
 
+@csrf_protect
+def quote(request):
+    return render(request, 'kd/create_quote.html')
+
+@csrf_protect
+def create_quote(request):
+    if request.method == "POST":
+        #empty_items, error_items = __form_validator(request.POST)
+        #if len(empty_items) != 0 or len(error_items) != 0: 
+        #    return render(request, 'kd/quote_create_failure.html', {'error_items' : error_items, 'empty_items' : empty_items})
+        id = __generate_order_id()
+        sender=__check_enduser_exists(request.POST['sender_name'], 
+            request.POST['sender_phone_number'], 
+            request.POST['sender_company_name'], 
+            request.POST['sender_address'], 
+            request.POST['sender_postcode'])
+        # receiver=__check_enduser_exists(request.POST['receiver_name'], 
+        #     request.POST['receiver_phone_number'], 
+        #     request.POST['receiver_company_name'], 
+        #     request.POST['receiver_address'], 
+        #     request.POST['receiver_postcode'])
+        weight = 0
+        if not request.POST['package_weight'] == '':
+            weight = request.POST['package_weight']
+        height = 0
+        if not request.POST['package_height'] == '':
+            height = request.POST['package_height']
+        width = 0
+        if not request.POST['package_width'] == '':
+            width = request.POST['package_width']
+        length = 0
+        if not request.POST['package_length'] == '':
+            length = request.POST['package_length']
+        curQuote = Quote.objects.create(id=id,
+                weight=weight,
+                sender_address=request.POST['sender_address'],
+                receiver_address= request.POST['receiver_address'],
+                create_time=datetime.datetime.now(),
+                height= height,
+                width= width,
+                length= length,
+                sender_info=sender,
+                notes=request.POST['package_notes']
+                )
+        QuoteAssignShippingUser.objects.create(quote=curQuote,
+            shipping_user_id="",
+            primKey=str(id)+str("")
+            )
+        return render(request, 'kd/quote_create_success.html', {'order_id' : id})
+    return render(request, 'kd/quote_create_success.html', {'order_id' : "unknow"})
+
 def reset_confirm(request, uidb36=None, token=None):
     return password_reset_confirm(request, template_name='kd/password_reset_confirmation.html',
         uidb36=uidb36, token=token, post_reset_redirect=reverse('login'))
@@ -210,7 +261,7 @@ def __generate_order_id():
     start = 10 ** 9
     end = (10 ** 10) - 1
     random_id = str(randint(start, end))
-    while Order.objects.filter(id=random_id).exists():
+    while Order.objects.filter(id=random_id).exists()  or Quote.objects.filter(id=random_id).exists():
             random_id = __generate_order_id()
     return random_id;
 

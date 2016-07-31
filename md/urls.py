@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all'),
     url(r'^password_reset_confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
             kd_views.reset_confirm, name='reset_confirm'),
-    url(r'^reset/$', kd_views.reset, name='reset')
+    url(r'^reset/$', kd_views.reset, name='reset'),
+    url(r'^create_quote/', kd_views.create_quote, name='create_quote'),
+    url(r'^quote/', kd_views.quote, name='quote'),
     ]
 
