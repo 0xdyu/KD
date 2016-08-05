@@ -6,16 +6,34 @@
 	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
 	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 	<!-- 引入 Bootstrap -->
-	<link href="http://apps.bdimg.com/libs/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-	<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">
     </head>
     
 	<body>
 	
 	<!-- Navigation Bar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		    <div class = "navbar-header"> <a class = "navbar-brand">可达物流</a></div>
+			<ul class="nav nav-tabs navbar-left">  
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li class="acitve"><a href="/user_profile">仪表盘</a></li>
+					<li><a href="/quote/">报价</a></li>
+					<li><a href="/logout">登出</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Navigation Bar 
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 		    <div class = "navbar-header"> 
@@ -26,16 +44,16 @@
 				<li><a href="/logout">登出</a></li>
 			</ul>
 		</div>
-	</nav>
+	</nav> -->
        	
 	<div>
-	<h3>创建快递单</h3>
-	<h4>(*)为必填项</h4>
+	<h4>创建快递单</h4>
+	<h5>(*)为必填项</h5>
 	<div class="panel-body">
         <form action="/create_order/" method="post">
             {% csrf_token %}
 
-	<h4>收件人信息</h4>
+	<h5>收件人信息</h5>
 	<div>
             收件人姓名(*): <input type="text" name="receiver_name">
 	    收件人联系方式(*): <input type="text" name="receiver_phone_number"><br>
@@ -45,7 +63,7 @@
             
 	</div>
 	<br>
-	<h4>寄件人信息</h4>
+	<h5>寄件人信息</h5>
 	<div>
             寄件人姓名(*): <input type="text" name="sender_name">
 	    寄件人联系方式(*): <input type="text" name="sender_phone_number"><br>
@@ -54,7 +72,7 @@
             寄件人公司: <input type="text" name="sender_company_name"><br>
 	</div>
 	<br>
-	<h4>包裹信息</h4>
+	<h5>包裹信息</h5>
 	<div>
 	    订单价格(*): <input type="text" name="package_price">  
             包裹重量: <input type="text" name="package_weight">（千克）<br> 
