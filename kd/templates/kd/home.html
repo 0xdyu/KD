@@ -20,7 +20,6 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">
 
     </head>
     
@@ -36,7 +35,6 @@
 				{% if user.is_authenticated %}
 					<li><a href="/user_profile/">仪表盘</a></li>
 				{% else %}
-					<li><a href="/quote/">报价</a></li>
 					<li><a href="/login">登录</a></li>
 				{% endif %}
 			</ul>
@@ -55,14 +53,6 @@
 			</div>
 		</div>
 		
-		<div class="row col-xs-6">
-			<br>
-			<p>快递报价查询</p>
-			<div>
-			<a href="/quote/" type="button" class="text-center btn btn-primary">报价</a>
-			</div>
-		</div>
-
 
 
     </body>

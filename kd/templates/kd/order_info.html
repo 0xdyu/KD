@@ -15,7 +15,6 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">
 <script type="text/javascript">
 		function orderStatusConvertChinese(status) {
 			if (status == 'initial') {
@@ -31,19 +30,7 @@
 	</script>
 	<script>
 		function formatDateTime(time) {
-			var tDate = new Date(time.replace(/\s/, 'T'));
-			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
-			var date = checkDDMMDigite(tDate.getDate()+"");
-			var hour = checkDDMMDigite(tDate.getHours()+"");
-			var min = checkDDMMDigite(tDate.getMinutes()+"");
-			var curDate = tDate.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + min;
-			return curDate;
-		}
-		function checkDDMMDigite(tt) {
-			if (tt.length == 1) {
-				tt = "0" + tt;
-			}
-			return tt;
+			return time.split(".")[0];
 		}
 	</script>
     </head>
