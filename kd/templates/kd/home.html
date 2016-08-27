@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-	{% load staticfiles %}
-        <title>可达物流管理系统</title>
-<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-<!-- 引入 Bootstrap -->
-<!-- Latest compiled and minified CSS -->
+  <head>
+    {% load staticfiles %}
+    <title>可达物流管理系统</title>
+    <script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <!-- 引入 Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
 
-	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
-	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-	<!-- 引入 Bootstrap -->
-	<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <!-- 引入 Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+
+  <body background="http://images.freepicturesweb.com/img1/20/15/d/271.jpg">
+	<!-- background="http://images.freepicturesweb.com/img1/20/15/d/271.jpg"-->
+	<!--<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">-->
+    <!-- Navigation Bar -->
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+	<div class = "navbar-header">
+	  <a class = "navbar-brand">可达物流管理系统</a></div>
+	<ul class="nav nav-tabs navbar-left">
+	  <li class="acitve"><a href="/">首頁 </a></li>
+	  {% if user.is_authenticated %}
+	  <li><a href="/user_profile/">仪表盘</a></li>
+	  {% else %}
+	  <li><a href="/login">登录</a></li>
+	  {% endif %}
+	</ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid well text-center">
+      <div class="row">
+        <!-- col-xs-6-->
+	<br> 
+	<div class="container form-group">
+          <p>请输入快递单号进行查询</p>
+	  <form action="/search_order/" method="get">
+	    快递单号：<input type="text" name="order_id"><br>
+	    <input class="btn btn-primary" type="submit" value="提交">
+	  </form>
+	</div>
+      </div>
 
 
-    </head>
-    
-	<body>
 
-	<!-- Navigation Bar -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-		    <div class = "navbar-header"> 
-			<a class = "navbar-brand">可达物流管理系统</a></div>
-			<ul class="nav nav-tabs navbar-left">  
-				<li class="acitve"><a href="/">首頁 </a></li>
-				{% if user.is_authenticated %}
-					<li><a href="/user_profile/">仪表盘</a></li>
-				{% else %}
-					<li><a href="/login">登录</a></li>
-				{% endif %}
-			</ul>
-		</div>
-	</nav>
-
-        <div class="container-fluid well">
-		<div class="row col-xs-6">
-			<br>
-			<p>请输入快递单号进行查询</p>
-			<div class="container form-group">
-				<form action="/search_order/" method="get">
-				    快递单号：<input type="text" name="order_id"><br>
-				    <input class="btn btn-primary" type="submit" value="提交">
-				</form>
-			</div>
-		</div>
-		
-
-
-    </body>
+  </body>
 </html>
-

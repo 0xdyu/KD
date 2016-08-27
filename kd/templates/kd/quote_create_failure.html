@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-	{% load staticfiles %}
-        <title>可达物流管理系统</title>
-	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
-	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-	<!-- 引入 Bootstrap -->
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <head>
+    {% load staticfiles %}
+    <title>可达物流管理系统</title>
+    <script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <!-- 引入 Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">
-<style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
-</head>
-    
-	<body>
-	
-	<!-- Navigation Bar -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-		    <div class = "navbar-header"> 
-			<a class = "navbar-brand"> 可达物流管理系统 </a> </div>
-			<ul class="nav nav-tabs navbar-left">  
-				<li class="acitve"><a href="/user_profile">首頁 </a></li>
-				<li><a href="/accounts/logout">登出</a></li>
-			</ul>
-		</div>
-	</nav>
-        
-	<div class="well well-lg">
-	{% if empty_items %}
-	<p>订单创建失败！以下为必填项： </p>
-	<ul>
-		{% for item in empty_items %}
-		<li>{{item}}</li>
-		{% endfor %}
+    <img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">
+    <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+  </head>
+
+  <body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+	<div class = "navbar-header">
+	  <a class = "navbar-brand"> 可达物流管理系统 </a> </div>
+	<ul class="nav nav-tabs navbar-left">
+	  <li class="acitve"><a href="/user_profile">首頁 </a></li>
+	  <li><a href="/accounts/logout">登出</a></li>
 	</ul>
-	{% endif %}
+      </div>
+    </nav>
 
-	{% if error_items %}
-	<p>订单创建失败！以下项输入无效： </p>
-	<ul>
-		{% for item in error_items %}
-		<li>{{item}}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	
-	<a href="/create">返回</a>
-    <a href="/user_profile">回到首页</a>
-	</div>
-        
-    </body>
+    <div class="well well-lg">
+      {% if empty_items %}
+      <p>订单创建失败！以下为必填项： </p>
+      <ul>
+	{% for item in empty_items %}
+	<li>{{item}}</li>
+	{% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if error_items %}
+      <p>订单创建失败！以下项输入无效： </p>
+      <ul>
+	{% for item in error_items %}
+	<li>{{item}}</li>
+	{% endfor %}
+      </ul>
+      {% endif %}
+
+      <a href="/create">返回</a>
+      <a href="/user_profile">回到首页</a>
+    </div>
+
+  </body>
 </html>

@@ -62,11 +62,39 @@
 	</nav>
 	
 	<div class="well well-lg">
-
         <p>订单序列号： {{ order_id }}</p>
         <p>更新时间： <script type="text/javascript">document.write(formatDateTime('{{update_time}}'))</script></p>
         <p>订单状态： <script type="text/javascript">document.write(orderStatusConvertChinese('{{order_status}}'))</script></p>
         <p>当前地点： {{ curr_location }}</p>
+	</div>
+
+	<br>
+
+	<div class="well well-lg">
+	<table class="table">
+   	<caption>状态更新查询</caption>
+  	<thead>
+      	<tr>
+		<th>更新时间</th>
+		<th>地点</th>
+		<th>状态</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	{% for statusEntry in objects %}
+		<tr>
+		<td><script type="text/javascript">document.write(formatDateTime('{{statusEntry.time}}'))</script></td>
+        <td>{{statusEntry.location}}</td>
+		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{statusEntry.status}}'))</script></td>
+		</tr>
+	{% endfor %}
+      
+   </tbody>
+	</table>
+	
+	</div>
+
 	<div><a class="btn btn-primary" href="/user_profile">返回 </a></div>
 	</div>
 
