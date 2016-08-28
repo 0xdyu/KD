@@ -81,11 +81,19 @@ def search_order(request):
         order_id = request.GET['order_id']
         if OrderStatus.objects.filter(id=order_id).exists():
             objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
+            status = []
+            for o in objects:
+                status.append({
+                    'status' : o.status,
+                    'location' : o.location,
+                    'time' : str(o.time)
+                    })
             return render(request, 'kd/order_info.html', 
                 {'order_id' : order_id, 
                 'order_status' : objects.values('status')[0]['status'], 
                 'curr_location' : objects.values('location')[0]['location'],
-                'update_time' : str(objects.values('time')[0]['time'])})
+                'update_time' : str(objects.values('time')[0]['time']),
+                'objects' : status})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
