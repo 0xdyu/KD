@@ -13,7 +13,7 @@ import json
 import re
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -24,45 +24,46 @@ def home(request):
 def login(request):
     return render(request, 'kd/login.html')
 
+
+
 @csrf_protect
 def user_profile(request):
     if request.user.is_authenticated()==False:
         return render(request, 'kd/home.html', {})
     #objects=Order.objects.filter(shipping_user_id=request.user.email)
+    if request.method == "GET":
+        order_type=request.GET['order_type']
+        objects = __get_orders(request, order_type)
+        orders = __generate_formate_orders(objects)
+        paginator = Paginator(orders, 25)
+        page = request.GET.get('page')
+        try:
+            orderList = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            orderList = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            orderList = paginator.page(paginator.num_pages)
+        return render(request, 'kd/profile.html', {'orders' : orderList, 'order_type': order_type})
+
+def __get_orders(request, order_type):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
     curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
     objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
+    if order_type == 'initial':
+        filteredObjects = objects.filter(status='initial')
+        return filteredObjects
+    if order_type == 'shipping':
+        filteredObjects = objects.filter(status='shipping')
+        return filteredObjects
+    if order_type == 'delivered':
+        filteredObjects = objects.filter(status='delivered')
+        return filteredObjects
+    return objects
 
-    return render(request, 'kd/profile.html', {'orders' : objects})
 
-def ajax_get_all_order(request):
-    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
-    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
-    return HttpResponse(__generate_json(objects))
-
-def ajax_get_inital_order(request):
-    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
-    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
-    filteredObjects = objects.filter(status='initial')
-    return HttpResponse(__generate_json(filteredObjects))
-
-def ajax_get_shipping_order(request):
-    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
-    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
-    filteredObjects = objects.filter(status='shipping')
-    return HttpResponse(__generate_json(filteredObjects))
-
-def ajax_get_delivered_order(request):
-    relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
-    curOrders = Order.objects.annotate(lastest_order_status_time=Max('orderstatus__time'))
-    objects = relatedOrderStatus.filter(time__in=[o.lastest_order_status_time for o in curOrders]).order_by('-time')
-    filteredObjects = objects.filter(status='delivered')
-    return HttpResponse(__generate_json(filteredObjects))
-
-def __generate_json(filteredObjects):
+def __generate_formate_orders(filteredObjects):
     orders=[]
     for entry in filteredObjects:
         orders.append({'order_id' : entry.id, 
@@ -72,8 +73,7 @@ def __generate_json(filteredObjects):
             'status' : entry.status,
             'update_time' : str(entry.time),#entry.time.strftime('%Y/%m/%d/') + str(entry.time.hour) + ':' + str(entry.time.minute),
             'create_time' : str(entry.order.create_time) })#entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
-    qs_json=json.dumps(orders)
-    return qs_json
+    return orders
 
 @csrf_protect
 def search_order(request):

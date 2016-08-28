@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import urls as auth_urls
 from kd import views as kd_views
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
@@ -26,17 +27,18 @@ urlpatterns = [
     url(r'^$', kd_views.home, name='home'),
     url(r'^login/', kd_views.login, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
-    url(r'^user_profile/', kd_views.user_profile, name='user_profile'),
+    url(r'^profile/', kd_views.user_profile, name='user_profile'),
+    url(r'^user_profile/$', RedirectView.as_view(url='/profile/?order_type=all&page=1')),
     url(r'^create/', kd_views.create, name='create'),
     url(r'^create_order/', kd_views.create_order, name='create_order'),
     url(r'^search_order/', kd_views.search_order, name='search_order'),
     url(r'^order_info/', kd_views.order_info_insider, name='order_info'),
     url(r'^order_update_call/', kd_views.order_update_call, name='order_update_call'),
     url(r'^order_update/', kd_views.order_update, name='order_update'),
-    url(r'^ajax_inital/$', kd_views.ajax_get_inital_order, name='ajax-inital'),
-    url(r'^ajax_shipping/$', kd_views.ajax_get_shipping_order, name='ajax-shipping'),
-    url(r'^ajax_delivered/$', kd_views.ajax_get_delivered_order, name='ajax-delivered'),
-    url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all'),
+    # url(r'^ajax_inital/$', kd_views.ajax_get_inital_order, name='ajax-inital'),
+    # url(r'^ajax_shipping/$', kd_views.ajax_get_shipping_order, name='ajax-shipping'),
+    # url(r'^ajax_delivered/$', kd_views.ajax_get_delivered_order, name='ajax-delivered'),
+    # url(r'^ajax_all/$', kd_views.ajax_get_all_order, name='ajax-all'),
     url(r'^password_reset_confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
             kd_views.reset_confirm, name='reset_confirm'),
     url(r'^reset/$', kd_views.reset, name='reset'),

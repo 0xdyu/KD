@@ -18,7 +18,6 @@
 
 	<script>
  		function formatDateTime(time) {
-			var tDate = new Date(time);
 			var tDate = new Date(time.replace(/\s/, 'T'));
   			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
   			var date = checkDDMMDigite(tDate.getDate()+"");
@@ -32,92 +31,8 @@
  				tt = "0" + tt;
  			}
  			return tt;
- 		}	</script>
-	<script>
-	    $(document).ready(function(){
-	      $.ajax({
-			    type: "GET",
-			    url: "/ajax_all/",
-			    dataType: "json",
-			    success: function (data) {
-			    	var content = generateTable(data);
-			        $('#dashboard').html(content);
-			    }
-			}
-	      	);
-	      $('#all').click(function(){
-	        $.ajax({
-			    type: "GET",
-			    url: "/ajax_all/",
-			    dataType: "json",
-			    success: function (data) {
-			    	var content = generateTable(data);
-			        $('#dashboard').html(content);
-			    }
-			});
-	      })
-	      $('#inital').click(function(){
-	        $.ajax({
-			    type: "GET",
-			    url: "/ajax_inital/",
-			    dataType: "json",
-			    success: function (data) {
-			    	var content = generateTable(data);
-			        $('#dashboard').html(content);
-			    }
-			});
-	      })
-	      $('#shipping').click(function(){
-	          $.ajax({
-			    type: "GET",
-			    url: "/ajax_shipping/",
-			    dataType: "json",
-			    success: function (data) {
-			    	var content = generateTable(data);
-			        $('#dashboard').html(content);
-			    }
-			});
-	      })
-	      $('#delivered').click(function(){
-	          $.ajax({
-			    type: "GET",
-			    url: "/ajax_delivered/",
-			    dataType: "json",
-			    success: function (data) {
-			    	var content = generateTable(data);
-			        $('#dashboard').html(content);
-			    }
-			});
-	      })
-	    });
-		
-		function generateTable(data) {
-				var content = '<table class="table" id="dashboard">';
-		    	content += "<caption>订单列表</caption>";
-		    	content += "<thead>";
-		    	content += "<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>";
-		    	
-		  		content += "</thead>";
-
-		  		content += "<tbody>";
-		      	
-		        $.each(data, function (varvalue, order){
-		          	content += '<td>  <a class="btn" href="/order_info/?order_id=' + order['order_id'] +'">查询</a></td>'
-		          	content += '<td>' + order['order_id'] + '</td>';
-		          	content += '<td>' + order['sender'] + '</td>';
-		          	content += '<td>' + order['receiver'] + '</td>';
-		          	content += '<td>' + order['location'] + '</td>';
-		          	content += '<td>' + orderStatusConvertChinese(order['status']) + '</td>';
-		          	content += '<td>' + formatDateTime(order['update_time']) + '</td>';
-		          	content += '<td>' + formatDateTime(order['create_time']) + '</td>';
-		          	content += '</tr>';
-		        });  
-		        content += "</tbody>";
-		        content += "</table>";
-		        return content;
-		}
-
-	</script>
+ 		}	
+ 	</script>
 
 	<script type="text/javascript">
 		function orderStatusConvertChinese(status) {
@@ -156,14 +71,46 @@
 	</div>
 	
 	<div class="text-center"> 
-		<a class="btn btn-primary" id="all">显示所有订单 </a>
-		<a class="btn btn-primary" id="inital">显示初始订单 </a>
-		<a class="btn btn-primary" id="shipping">显示转运中订单 </a>
-		<a class="btn btn-primary" id="delivered">显示已完成订单 </a>
+		<a href="?order_type=all&page=1" class="btn btn-primary" id="all">显示所有订单 </a>
+		<a href="?order_type=initial&page=1" class="btn btn-primary" id="inital">显示初始订单 </a>
+		<a href="?order_type=shipping&page=1" class="btn btn-primary" id="shipping">显示转运中订单 </a>
+		<a href="?order_type=delivered&page=1" class="btn btn-primary" id="delivered">显示已完成订单 </a>
 	</div>
 
 	<table class="table" id="dashboard">
+	<caption>订单列表</caption>
+	<thead>
+	<tr> <th> </th><th>ID</th><th>发件人</th><th>收件人</th><th>包裹位置</th><th>包裹状态</th><th>订单更新日期</th><th>订单创建日期</th></tr>
+	</thead>
+	<tbody>
 
+	{% for order in orders %}
+    	<td> <a class="btn" href="/order_info/?order_id={{order.order_id}}">查询</a></td>
+    	<td> {{order.order_id}} </td>
+    	<td>{{order.sender}} </td>
+    	<td>{{order.receiver}} </td>
+    	<td>{{order.location}} </td>
+    	<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{order.status}}'))</script></td>
+    	<td><script type="text/javascript">document.write(formatDateTime('{{order.update_time}}'))</script></td>
+    	<td><script type="text/javascript">document.write(formatDateTime('{{order.create_time}}'))</script></td>
+    	</tr>
+	{% endfor %}
+	</tbody>
 	</table>
+	<div class="pagination">
+    <span class="step-links">
+        {% if orders.has_previous %}
+            <a href="?order_type={{order_type}}&page={{ orders.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+        </span>
+
+        {% if orders.has_next %}
+            <a href="?order_type={{order_type}}&page={{ orders.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
     </body>
 </html>
