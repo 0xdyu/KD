@@ -18,12 +18,17 @@
 
 	<script>
  		function formatDateTime(time) {
-			var tDate = new Date(time.replace(/\s/, 'T'));
-  			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
+ 			dateStr = time.split('.')[0]
+ 			var a=dateStr.split(" ");
+			var d=a[0].split("-");
+			var t=a[1].split(":");
+			var tDate = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
+			var month = checkDDMMDigite((tDate.getMonth()+1)+"");
   			var date = checkDDMMDigite(tDate.getDate()+"");
   			var hour = checkDDMMDigite(tDate.getHours()+"");
  			var min = checkDDMMDigite(tDate.getMinutes()+"");
  			var curDate = tDate.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + min;
+			console.log(curDate);
  			return curDate;
  		}
  		function checkDDMMDigite(tt) {
