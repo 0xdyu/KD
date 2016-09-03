@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import EndUser, ShippingUser, Order, OrderStatus, QuoteAssignShippingUser, Quote, QuoteBid
+from .models import EndUser, ShippingUser, Order, ExternalOrder, OrderStatus, QuoteAssignShippingUser, Quote, QuoteBid
 
 # Register your models here.
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'weight', 'shipping_user_id', 'sender',  'receiver',  'create_time')
+
+class ExternalOrderAdmin(admin.ModelAdmin):
+    list_display = ('order', 'external_order_id', 'external_checking_method')
 
 class OrderStatusAdmin(admin.ModelAdmin):
 	list_display = ('order', 'id', 'time', 'status', 'location', 'primKey')
@@ -26,6 +29,7 @@ class ShippingUserAdmin(admin.ModelAdmin):
 admin.site.register(EndUser, EndUserAdmin)
 admin.site.register(ShippingUser, ShippingUserAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(ExternalOrder, ExternalOrderAdmin)
 admin.site.register(OrderStatus, OrderStatusAdmin)
 admin.site.register(Quote, QuoteAdmin)
 admin.site.register(QuoteAssignShippingUser, QuoteAssignShippingUserAdmin)

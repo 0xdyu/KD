@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
-from kd.models import Order, EndUser, ShippingUser, OrderStatus, Quote, QuoteAssignShippingUser, QuoteBid
+from kd.models import Order, EndUser, ShippingUser, OrderStatus, Quote, QuoteAssignShippingUser, QuoteBid, ExternalOrder
 from django.shortcuts import get_object_or_404
 from random import randint
 import datetime
@@ -88,12 +88,20 @@ def search_order(request):
                     'location' : o.location,
                     'time' : str(o.time)
                     })
+            external_order_id=''
+            external_checking_method=''
+            if ExternalOrder.objects.filter(order=order_id).exists():
+                external_order_objects=ExternalOrder.objects.filter(order=order_id)
+                external_order_id=external_order_objects.values()[0]['external_order_id']
+                external_checking_method=external_order_objects.values()[0]['external_checking_method']
             return render(request, 'kd/order_info.html', 
                 {'order_id' : order_id, 
                 'order_status' : objects.values('status')[0]['status'], 
                 'curr_location' : objects.values('location')[0]['location'],
                 'update_time' : str(objects.values('time')[0]['time']),
-                'objects' : status})
+                'objects' : status,
+                'external_order_id':external_order_id,
+                'external_checking_method':external_checking_method})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
@@ -108,6 +116,12 @@ def order_info_insider(request):
         order_id = request.GET['order_id']
         if OrderStatus.objects.filter(id=order_id).exists():
             objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
+            external_order_id=''
+            external_checking_method=''
+            if ExternalOrder.objects.filter(order=order_id).exists():
+                external_order_objects=ExternalOrder.objects.filter(order=order_id)
+                external_order_id=external_order_objects.values()[0]['external_order_id']
+                external_checking_method=external_order_objects.values()[0]['external_checking_method']
             status = []
             for o in objects:
             	status.append({
@@ -119,7 +133,9 @@ def order_info_insider(request):
                 {'curStatus' : objects[0],
                 'curStatus_time': str(objects[0].time),
                 'create_time' : str(objects[0].order.create_time),
-                'objects' : status})
+                'objects' : status,
+                'external_order_id':external_order_id,
+                'external_checking_method':external_checking_method})
 
         else:
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
@@ -183,6 +199,7 @@ def create_order(request):
         weight = 0
         if not request.POST['package_weight'] == '':
             weight = request.POST['package_weight']
+
         curOrder = Order.objects.create(id=id,
                 price=price,
                 weight=weight,
@@ -198,6 +215,12 @@ def create_order(request):
             location=request.POST['package_current_location'],
             primKey=str(id)+str(datetime.datetime.now())
             )
+        external_order_id = request.POST['external_order_id']
+        external_checking_method = request.POST['external_checking_method']
+        if (not external_order_id == '') or (not external_checking_method == ''):
+            ExternalOrder.objects.create(order=curOrder,
+                external_order_id=external_order_id,
+                external_checking_method=external_checking_method)
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
 

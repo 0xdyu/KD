@@ -29,38 +29,7 @@
 		}
 	</script>
 	<script>
-		/**Parses string formatted as YYYY-MM-DD to a Date object.
- * If the supplied string does not match the format, an 
- * invalid Date (value NaN) is returned.
- * @param {string} dateStringInRange format YYYY-MM-DD, with year in
- * range of 0000-9999, inclusive.
- * @return {Date} Date object representing the string.
- */
-
-  // function parseISO8601(dateStringInRange) {
-  //   var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
-  //       date = new Date(NaN), month,
-  //       parts = isoExp.exec(dateStringInRange);
-
-  //   if(parts) {
-  //     month = +parts[2];
-  //     date.setFullYear(parts[1], month - 1, parts[3]);
-  //     if(month != date.getMonth() + 1) {
-  //       date.setTime(NaN);
-  //     }
-  //   }
-  //   return date;
-  // }
-
  		function formatDateTime(time) {
- 			//console.log(time);
- 			// var tDate = new Date(time.replace(/\s/, 'T'));
-  		// 	var month = checkDDMMDigite((tDate.getMonth()+1)+"");
-  		// 	var date = checkDDMMDigite(tDate.getDate()+"");
-  		// 	var hour = checkDDMMDigite(tDate.getHours()+"");
- 			// var min = checkDDMMDigite(tDate.getMinutes()+"");
- 			// var curDate = tDate.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + min;
-
  			dateStr = time.split('.')[0]
  			var a=dateStr.split(" ");
 			var d=a[0].split("-");
@@ -138,7 +107,26 @@
 	</table>
 
 	</div>
+	<div class="well well-lg">
+	<table class="table">
+   	<caption>关联单据信息</caption>
+  	<thead>
+      	<tr>
+		<th>关联单号</th>
+		<th>关联单查询方式</th>
+     	</tr>
+   	</thead>
 
+	<tbody>
+	<tr>
+        <td>{{external_order_id}}</td>
+        <td>{{external_checking_method}}</td>
+    </tr>
+      
+   </tbody>
+	</table>
+
+	</div>
 	<div class="well well-lg">
 	<table class="table">
    	<caption>状态更新查询</caption>
