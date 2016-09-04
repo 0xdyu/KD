@@ -30,6 +30,7 @@ def login(request):
 def user_profile(request):
     if request.user.is_authenticated()==False:
         return render(request, 'kd/home.html', {})
+        # I am testing
     #objects=Order.objects.filter(shipping_user_id=request.user.email)
     if request.method == "GET":
         order_type=request.GET['order_type']
