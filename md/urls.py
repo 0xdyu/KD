@@ -44,5 +44,9 @@ urlpatterns = [
     url(r'^reset/$', kd_views.reset, name='reset'),
     url(r'^create_quote/', kd_views.create_quote, name='create_quote'),
     url(r'^quote/', kd_views.quote, name='quote'),
+    url(r'^order_info_edit_show/', kd_views.edit_order_info_show, name='edit_order_info_show'),
+    url(r'^edit_order_info/', kd_views.edit_order_info, name='edit_order_info'),
+    url(r'^external_order_info_edit_show/', kd_views.edit_external_order_info_show, name='edit_external_order_info_show'),
+    url(r'^edit_external_order_info/', kd_views.edit_external_order_info, name='edit_external_order_info'),
     ]
 

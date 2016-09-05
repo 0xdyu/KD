@@ -144,6 +144,101 @@ def order_info_insider(request):
     return render(request, 'kd/profile.html', {})
 
 @csrf_protect
+def edit_order_info_show(request):
+    if request.user.is_authenticated()==False or request.user.email != Order.objects.get(id=request.GET['order_id']).shipping_user_id:
+        return render(request, 'kd/search_order_failed.html', {'order_id' : request.GET['order_id']})
+    if request.method == "GET":
+        order_id = request.GET['order_id']
+        if OrderStatus.objects.filter(id=order_id).exists():
+            objects=OrderStatus.objects.filter(id=order_id).order_by('-time')
+            return render(request, 'kd/edit_order_info_show.html', 
+                {'curStatus' : objects[0] })
+
+        else:
+            return render(request, 'kd/edit_order_failed.html', {'order_id' : order_id})
+        
+    return render(request, 'kd/profile.html', {})
+
+@csrf_protect
+def edit_order_info(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
+    if request.method == "POST":
+        empty_items, error_items = __form_validator(request.POST)
+        if len(empty_items) != 0 or len(error_items) != 0: 
+            return render(request, 'kd/order_create_failure.html', {'error_items' : error_items, 'empty_items' : empty_items})
+        order_id = request.POST['order_id']
+        sender=__update_enduser(request.POST['sender_name'], 
+            request.POST['sender_phone_number'], 
+            request.POST['sender_company_name'], 
+            request.POST['sender_address'], 
+            request.POST['sender_postcode'])
+        receiver=__update_enduser(request.POST['receiver_name'], 
+            request.POST['receiver_phone_number'], 
+            request.POST['receiver_company_name'], 
+            request.POST['receiver_address'], 
+            request.POST['receiver_postcode'])
+        price = 0
+        if not request.POST['package_price'] == '':
+            price = request.POST['package_price']
+        weight = 0
+        if not request.POST['package_weight'] == '':
+            weight = request.POST['package_weight']
+        shipping_user_id = request.POST['shipping_user_id']
+        create_time = request.POST['create_time']
+        try:
+            curOrder = Order.objects.get(id=order_id)
+            curOrder.price = price
+            curOrder.weight = weight
+            curOrder.sender=sender
+            curOrder.receiver=receiver
+            curOrder.save()
+            return render(request, 'kd/order_edit_success.html', {'order_id' : order_id}) 
+        except Order.DoesNotExists:
+            return render(request, 'kd/edit_order_failed.html', {'order_id' : order_id})
+    return render(request, 'kd/edit_order_failed.html', {'order_id' : order_id})
+
+@csrf_protect
+def edit_external_order_info_show(request):
+    if request.user.is_authenticated()==False or request.user.email != Order.objects.get(id=request.GET['order_id']).shipping_user_id:
+        return render(request, 'kd/search_order_failed.html', {'order_id' : request.GET['order_id']})
+    if request.method == "GET":
+        order_id = request.GET['order_id']
+        external_order_id=''
+        external_checking_method=''
+        if ExternalOrder.objects.filter(order=order_id).exists():
+            external_order_objects=ExternalOrder.objects.filter(order=order_id)
+            external_order_id=external_order_objects.values()[0]['external_order_id']
+            external_checking_method=external_order_objects.values()[0]['external_checking_method']
+        return render(request, 'kd/edit_external_order_info_show.html', 
+                {'external_order_id' : external_order_id, 'external_checking_method' : external_checking_method, 'order_id' : order_id })  
+    return render(request, 'kd/search_order_failed.html', {})
+
+@csrf_protect
+def edit_external_order_info(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
+    if request.method == "POST":
+        order_id = request.POST['order_id']
+        curOrder = Order.objects.get(id=order_id)
+        external_order_id = request.POST['external_order_id']
+        external_checking_method = request.POST['external_checking_method']
+        old_external_order_id = request.POST['old_external_order_id']
+        if ExternalOrder.objects.filter(external_order_id=old_external_order_id).exists():
+            ExternalOrder.objects.filter(external_order_id=old_external_order_id).delete()
+            # curExternalOrder = ExternalOrder.objects.get(order=order_id)
+            # curExternalOrder.external_order_id = external_order_id
+            # curExternalOrder.external_checking_method = external_checking_method
+            # curExternalOrder.save()
+        if (not external_order_id == '') or (not external_checking_method == ''):
+            ExternalOrder.objects.create(order=curOrder,
+                external_order_id=external_order_id,
+                external_checking_method=external_checking_method)
+        return render(request, 'kd/order_edit_success.html', {'order_id' : order_id})
+
+    return render(request, 'kd/edit_order_failed.html', {'order_id' : order_id})
+
+@csrf_protect
 def order_update_call(request):
     if request.user.is_authenticated()==False or request.user.email != Order.objects.get(id=request.GET['order_id']).shipping_user_id:
         return render(request, 'kd/order_update_fail.html', {'order_id' : request.GET['order_id']})
@@ -224,6 +319,7 @@ def create_order(request):
                 external_checking_method=external_checking_method)
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
+
 
 @csrf_protect
 def quote(request):
@@ -310,6 +406,23 @@ def __generate_user_id():
 def __check_enduser_exists(user_name, phone_number, company_name, address, postcode):
     if EndUser.objects.filter(name=user_name, phone_number=phone_number).exists():
             return EndUser.objects.get(name=user_name, phone_number=phone_number);
+    user_id = __generate_user_id()
+    return EndUser.objects.create(user_id=user_id,
+            name=user_name,
+            phone_number=phone_number,
+            company_name=company_name,
+            address=address,
+            postcode=postcode
+            );
+
+def __update_enduser(user_name, phone_number, company_name, address, postcode):
+    if EndUser.objects.filter(name=user_name, phone_number=phone_number).exists():
+        userObject = EndUser.objects.get(name=user_name, phone_number=phone_number)
+        userObject.company_name=company_name
+        userObject.postcode=postcode
+        userObject.address=address
+        userObject.save()
+        return userObject
     user_id = __generate_user_id()
     return EndUser.objects.create(user_id=user_id,
             name=user_name,

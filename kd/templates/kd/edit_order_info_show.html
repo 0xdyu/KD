@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	{% load staticfiles %}
+        <title>可达物流管理系统</title>
+	<script src="//upcdn.b0.upaiyun.com/libs/jqueryui/jquery.ui-1.9.0.min.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<!-- 引入 Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    </head>
+    
+	<body>
+	
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		    <div class = "navbar-header"> <a class = "navbar-brand">可达物流管理系统</a></div>
+			<ul class="nav nav-tabs navbar-left">  
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li class="acitve"><a href="/user_profile">仪表盘</a></li>
+					<li><a href="/logout">登出</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Navigation Bar 
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		    <div class = "navbar-header"> 
+			<a class = "navbar-brand"> <h2>欢迎使用可达物流管理系统！ </h2></a> </div>
+			<ul class="nav navbar-nav">  
+				<li class="acitve"><a href="/">首頁 </a></li>
+				<li class="acitve"><a href="/user_profile">仪表盘</a></li>
+				<li><a href="/logout">登出</a></li>
+			</ul>
+		</div>
+	</nav> -->
+       	
+	<div>
+	<h4>修改快递单{{curStatus.order.id}}</h4>
+	<h5>(*)为必填项</h5>
+	<div class="panel-body">
+        <form action="/edit_order_info/" method="post">
+            {% csrf_token %}
+
+
+	<h5>收件人信息</h5>
+	<div>
+
+            收件人姓名(*): <input type="text" name="receiver_name" value="{{curStatus.order.receiver.name}}">
+	    收件人联系方式(*): <input type="text" name="receiver_phone_number" value="{{curStatus.order.receiver.phone_number}}"><br>
+            收件人地址(*): <input type="text" name="receiver_address" value="{{curStatus.order.receiver.address}}">
+            收件人邮编: <input type="text" name="receiver_postcode" value="{{curStatus.order.receiver.postcode}}"><br>
+            收件人公司: <input type="text" name="receiver_company_name" value="{{curStatus.order.receiver.company_name}}"><br>
+            
+	</div>
+	<br>
+	<h5>寄件人信息</h5>
+	<div>
+            寄件人姓名(*): <input type="text" name="sender_name" value="{{curStatus.order.sender.name}}">
+	    寄件人联系方式(*): <input type="text" name="sender_phone_number" value="{{curStatus.order.sender.phone_number}}"><br>
+            寄件人地址(*): <input type="text" name="sender_address" value="{{curStatus.order.sender.address}}">
+            寄件人邮编: <input type="text" name="sender_postcode" value="{{curStatus.order.sender.postcode}}"><br>
+            寄件人公司: <input type="text" name="sender_company_name" value="{{curStatus.order.sender.company_name}}"><br>
+	</div>
+	<br>
+	<h5>包裹信息</h5>
+	<div>
+	    订单价格(*): <input type="text" name="package_price" value="{{curStatus.order.price}}"> 
+	    包裹重量: <input type="text" name="package_weight" value="{{curStatus.order.weight}}"> （千克）<br>
+	</div>
+	<br>
+		<input type="hidden" name="order_id" value="{{curStatus.order.id}}">
+		<input type="hidden" name="shipping_user_id" value="{{curStatus.order.shipping_user_id}}">
+		<input type="hidden" name="create_time" value="{{curStatus.order.create_time}}">
+        <input class="btn btn-primary" type="submit" value="修改">
+        </form>
+	
+	</div>    
+	</div>
+    </body>
+</html>
