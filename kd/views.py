@@ -14,6 +14,7 @@ import re
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from operator import itemgetter
 
 # Create your views here.
 
@@ -34,9 +35,12 @@ def user_profile(request):
     #objects=Order.objects.filter(shipping_user_id=request.user.email)
     if request.method == "GET":
         order_type=request.GET['order_type']
+        time_based = request.GET['time']
+        asc = request.GET['asc']
         objects = __get_orders(request, order_type)
         orders = __generate_formate_orders(objects)
-        paginator = Paginator(orders, 25)
+        sortedOrders = __sort_orders(orders, time_based, asc)
+        paginator = Paginator(sortedOrders, 25)
         page = request.GET.get('page')
         try:
             orderList = paginator.page(page)
@@ -75,6 +79,13 @@ def __generate_formate_orders(filteredObjects):
             'update_time' : str(entry.time),#entry.time.strftime('%Y/%m/%d/') + str(entry.time.hour) + ':' + str(entry.time.minute),
             'create_time' : str(entry.order.create_time) })#entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
     return orders
+
+def __sort_orders(objects, time_based, asc):
+    reverse = False
+    if asc == '0' :
+        reverse = True
+    sortedObjects = sorted(objects,key=itemgetter(time_based), reverse=reverse)
+    return sortedObjects
 
 @csrf_protect
 def search_order(request):

@@ -76,11 +76,27 @@
 	</div>
 	
 	<div class="text-center"> 
-		<a href="?order_type=all&page=1" class="btn btn-primary" id="all">显示所有订单 </a>
-		<a href="?order_type=initial&page=1" class="btn btn-primary" id="inital">显示初始订单 </a>
-		<a href="?order_type=shipping&page=1" class="btn btn-primary" id="shipping">显示转运中订单 </a>
-		<a href="?order_type=delivered&page=1" class="btn btn-primary" id="delivered">显示已完成订单 </a>
+		<a href="?order_type=all&time=create_time&asc=0&page=1" class="btn btn-primary" id="all">显示所有订单 </a>
+		<a href="?order_type=initial&time=create_time&asc=0&page=1" class="btn btn-primary" id="inital">显示初始订单 </a>
+		<a href="?order_type=shipping&time=create_time&asc=0&page=1" class="btn btn-primary" id="shipping">显示转运中订单 </a>
+		<a href="?order_type=delivered&time=create_time&asc=0&page=1" class="btn btn-primary" id="delivered">显示已完成订单 </a>
 	</div>
+
+	<div>
+            排序: 
+            <select id="sort_selection">
+            	<option ></option>
+    			<option value="" href="?order_type={{order_type}}&time=create_time&asc=0&page=1">创建订单时间从新到旧</option>
+    			<option value="" href="?order_type={{order_type}}&time=create_time&asc=1&page=1">创建订单时间从旧到新</option>
+    			<option value="" href="?order_type={{order_type}}&time=update_time&asc=0&page=1">更新订单时间从新到旧</option>
+    			<option value="" href="?order_type={{order_type}}&time=update_time&asc=1&page=1">更新订单时间从旧到新</option>
+  			</select>
+	</div>
+	<script>
+document.getElementById('sort_selection').onchange = function() {
+    window.location.href = this.children[this.selectedIndex].getAttribute('href');
+}
+</script>
 
 	<table class="table" id="dashboard">
 	<caption>订单列表</caption>

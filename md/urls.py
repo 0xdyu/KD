@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^login/', kd_views.login, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^profile/', kd_views.user_profile, name='user_profile'),
-    url(r'^user_profile/$', RedirectView.as_view(url='/profile/?order_type=all&page=1')),
+    url(r'^user_profile/$', RedirectView.as_view(url='/profile/?order_type=all&time=create_time&asc=0&page=1')),
     url(r'^create/', kd_views.create, name='create'),
     url(r'^create_order/', kd_views.create_order, name='create_order'),
     url(r'^search_order/', kd_views.search_order, name='search_order'),
