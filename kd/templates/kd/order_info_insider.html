@@ -69,7 +69,7 @@
 
 	<div class="well well-lg">
 	<table class="table">
-   	<caption>您的订单</caption>
+   	<caption class="text-center">您的订单</caption>
   	<thead>
       	<tr>
 		<th>订单号</th>
@@ -105,11 +105,11 @@
       
    </tbody>
 	</table>
-	<a href="/order_info_edit_show/?order_id={{curStatus.id}}">修改</a>
+	<div class="text-right"><a  href="/order_info_edit_show/?order_id={{curStatus.id}}">修改</a></div>
 	</div>
 	<div class="well well-lg">
 	<table class="table">
-   	<caption>关联单据信息</caption>
+   	<caption class="text-center">关联单据信息</caption>
   	<thead>
       	<tr>
 		<th>关联单号</th>
@@ -125,12 +125,12 @@
       
    </tbody>
 	</table>
-	<a href="/external_order_info_edit_show/?order_id={{curStatus.id}}">修改</a>
+	<a class="btn btn-primary" href="/external_order_info_edit_show/?order_id={{curStatus.id}}">修改</a>
 	</div>
 	<div class="well well-lg">
 	<table class="table">
-   	<caption>状态更新查询</caption>
   	<thead>
+	<caption class="text-center">状态更新查询</caption>
       	<tr>
 		<th>更新时间</th>
 		<th>地点</th>
@@ -149,10 +149,7 @@
       
    </tbody>
 	</table>
-	</div>
-	
-	<div class="container-fluid">
-	   <a class="btn btn-primary" href="/order_update_call/?order_id={{curStatus.id}}">更新订单</a>	
+	<a class="btn btn-primary container-fluid" href="/order_update_call/?order_id={{curStatus.id}}">更新订单</a>	
 	</div>
 
     </body>
