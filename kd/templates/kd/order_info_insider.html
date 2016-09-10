@@ -71,7 +71,8 @@
 	<table class="table">
    	<caption class="text-center">您的订单  <div class="text-right"><a href="/order_info_edit_show/?order_id={{curStatus.id}}">修改</a></div> </caption>
   	<thead>
-      	<tr>
+	<!--     	
+	<tr>
 		<th>订单号</th>
 		<th>订单价格</th>
 		<th>发件人</th>
@@ -84,7 +85,7 @@
 		<th>包裹状态</th>
 		<th>订单更新日期</th>
 		<th>订单创建日期</th>
-     	</tr>
+     	</tr> 
    	</thead>
 
 	<tbody>
@@ -103,9 +104,116 @@
 		<td><script type="text/javascript">document.write(formatDateTime('{{create_time}}'))</script></td>
     </tr>
       
-   </tbody>
+   </tbody>-->
+	<tr>
+		<th>订单号</th>
+		<th>订单创建日期</th>
+		<th>订单更新日期</th>
+		<th>订单价格</th>
+		
+		
+		<th>包裹位置</th>
+		<th>包裹状态</th>
+     	</tr> 
+   	</thead>
+
+	<tbody>
+	<tr>
+		<td>{{curStatus.id }}</td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{create_time}}'))</script></td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{curStatus_time}}'))</script></td>
+		<td>{{curStatus.order.price}}</td>
+		<td>{{ curStatus.location }}</td>
+		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{curStatus.status}}'))</script></td>
+    	</tr>
+      
+   	</tbody>
+	</table>
+	
+	<table class="table"> <!--Receiver Information-->
+	<caption class="text-center">收件人信息</caption>
+  	<thead>
+      	<tr>
+		<th>收件人</th>
+		<th>收件人联系电话</th>
+		<th>收件人地址</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	<tr>
+		<td>{{curStatus.order.receiver.name}}</td>
+		<td>{{curStatus.order.receiver.phone_number}}</td>
+		<td>{{curStatus.order.receiver.address}}</td>
+   	 </tr>
+      
+   	</tbody>
+	</table>
+
+	
+	<table class="table"><!--Sender Information-->
+   	<caption class="text-center">发件人信息</caption>
+  	<thead>
+      	<tr>
+		<th>发件人</th>
+		<th>发件人联系电话</th>
+		<th>发件人地址</th>
+     	</tr>
+   	</thead>
+
+	<tbody>
+	<tr>
+		<td>{{curStatus.order.sender.name}}</td>
+		<td>{{curStatus.order.sender.phone_number}}</td>
+		<td>{{curStatus.order.sender.address}}</td>
+        </tr>
+      
+   	</tbody>
 	</table>
 	</div>
+	
+	<!--<div>
+	<table class="table">
+   	<caption class="text-center">您的订单  <div class="text-right"><a href="/order_info_edit_show/?order_id={{curStatus.id}}">修改</a></div> </caption>
+  	<thead>    	
+	<tr>
+		<th>订单号</th>
+		<th>订单价格</th>
+		<th>发件人</th>
+		<th>发件人联系电话</th>
+		<th>发件人地址</th>
+		<th>收件人</th>
+		<th>收件人联系电话</th>
+		<th>收件人地址</th>
+		<th>包裹位置</th>
+		<th>包裹状态</th>
+		<th>订单更新日期</th>
+		<th>订单创建日期</th>
+     	</tr> 
+   	</thead>
+
+	<tbody>
+	<tr>
+		<td>{{curStatus.id }}</td>
+		<td>{{curStatus.order.price}}</td>
+		<td>{{curStatus.order.sender.name}}</td>
+		<td>{{curStatus.order.sender.phone_number}}</td>
+		<td>{{curStatus.order.sender.address}}</td>
+		<td>{{curStatus.order.receiver.name}}</td>
+		<td>{{curStatus.order.receiver.phone_number}}</td>
+		<td>{{curStatus.order.receiver.address}}</td>
+		<td>{{ curStatus.location }}</td>
+		<td><script type="text/javascript">document.write(orderStatusConvertChinese('{{curStatus.status}}'))</script></td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{curStatus_time}}'))</script></td>
+		<td><script type="text/javascript">document.write(formatDateTime('{{create_time}}'))</script></td>
+   	</tr>
+      
+   	</tbody>
+	</table>
+	</div> -->
+	
+
+
 	<div class="well well-lg">
 	<table class="table">
    	<caption class="text-center">关联单据信息</caption>
@@ -120,12 +228,13 @@
 	<tr>
         <td>{{external_order_id}}</td>
         <td>{{external_checking_method}}</td>
-    </tr>
-      
-   </tbody>
+	</tr>
+	</tbody>
 	</table>
 	<a class="btn btn-primary" href="/external_order_info_edit_show/?order_id={{curStatus.id}}">修改</a>
 	</div>
+	
+	
 	<div class="well well-lg">
 	<table class="table">
   	<thead>
