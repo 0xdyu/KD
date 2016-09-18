@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^user_profile/$', RedirectView.as_view(url='/profile/?order_type=all&time=create_time&asc=0&page=1')),
     url(r'^create/', kd_views.create, name='create'),
     url(r'^create_order/', kd_views.create_order, name='create_order'),
+    url(r'^search_order_insider/', kd_views.search_order_form_insider, name='search_order_form_insider'),
+    url(r'^search_order_results_insider/', kd_views.search_order_results_insider, name='search_order_results_insider'),
     url(r'^search_order/', kd_views.search_order, name='search_order'),
     url(r'^order_info/', kd_views.order_info_insider, name='order_info'),
     url(r'^order_update_call/', kd_views.order_update_call, name='order_update_call'),

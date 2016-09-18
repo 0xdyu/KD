@@ -7,7 +7,7 @@ from kd.models import Order, EndUser, ShippingUser, OrderStatus, Quote, QuoteAss
 from django.shortcuts import get_object_or_404
 from random import randint
 import datetime
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.core import serializers
 import json
 import re
@@ -80,6 +80,15 @@ def __generate_formate_orders(filteredObjects):
             'create_time' : str(entry.order.create_time) })#entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
     return orders
 
+def __generate_formate_orders_from_order(orderObjects):
+    orders=[]
+    for entry in orderObjects:
+        orders.append({'order_id' : entry.id, 
+            'sender' : entry.sender.name, 
+            'receiver' : entry.receiver.name,
+            'create_time' : str(entry.create_time) })#entry.order.create_time.strftime('%Y/%m/%d/') + str(entry.order.create_time.hour) + ':' + str(entry.order.create_time.minute)}) 
+    return orders
+
 def __sort_orders(objects, time_based, asc):
     reverse = False
     if asc == '0' :
@@ -119,6 +128,68 @@ def search_order(request):
             return render(request, 'kd/search_order_failed.html', {'order_id' : order_id})
         
     return render(request, 'kd/home.html', {})
+
+@csrf_protect
+def search_order_form_insider(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
+    return render(request, 'kd/search_order_insider.html')
+
+@csrf_protect
+def search_order_results_insider(request):
+    if request.user.is_authenticated()==False:
+        return render(request, 'kd/home.html', {})
+    if request.method == "POST":
+        order_id = request.POST['order_id']
+        if not order_id == "":
+            return HttpResponseRedirect('/order_info/?order_id='+order_id)
+
+        sender = None
+        sender_name=request.POST['sender_name']
+        sender_phone_number=request.POST['sender_phone_number']
+        if not sender_name=="" and not sender_phone_number=="":
+            sender = EndUser.objects.filter(name=sender_name, phone_number=sender_phone_number)
+        # else if not sender_phone_number=="":
+        #     sender = EndUser.objects.filter(phone_number=sender_phone_number)
+        # else if not sender_name == "":
+        #     sender = EndUser.objects.filter(name=sender_name)
+        receiver = None
+        receiver_name=request.POST['receiver_name']
+        receiver_phone_number=request.POST['receiver_phone_number']
+        if not receiver_name=="" and not receiver_phone_number=="":
+            receiver = EndUser.objects.filter(name=receiver_name, phone_number=receiver_phone_number)
+        # else if not sender_phone_number=="":
+        #     receivers = EndUser.objects.filter(phone_number=receiver_phone_number)
+        # else if not receiver_name == "":
+        #     receivers = EndUser.objects.filter(name=receiver_name)
+        # package_current_status=request.POST['package_current_status']
+        # package_current_location=request.POST['package_current_location']
+        objects = None
+        if not sender==None and not receiver==None:
+        	objects = Order.objects.filter(sender=sender, receiver=receiver)
+        elif not sender==None:
+        	objects = Order.objects.filter(sender=sender)
+        elif not receiver==None:
+        	objects= Order.objects.filter(receiver=receiver)
+
+        if objects == None or not objects.exists():
+        	return render(request, 'kd/search_order_insider_failed.html', {});
+
+        orders = __generate_formate_orders_from_order(objects)
+        # sortedOrders = __sort_orders(orders, time_based, '0')
+        paginator = Paginator(orders, 25)
+        page = request.GET.get('page')
+        try:
+            orderList = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            orderList = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            orderList = paginator.page(paginator.num_pages)
+        return render(request, 'kd/search_order_results_insider.html', {'orders' : orderList})
+    return render(request, 'kd/home.html') 
+
 
 @csrf_protect
 def order_info_insider(request):
