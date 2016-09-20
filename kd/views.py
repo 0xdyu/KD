@@ -141,8 +141,13 @@ def search_order_results_insider(request):
         return render(request, 'kd/home.html', {})
     if request.method == "POST":
         order_id = request.POST['order_id']
+        order_id = order_id.strip()
         if not order_id == "":
-            return HttpResponseRedirect('/order_info/?order_id='+order_id)
+            objects = Order.objects.filter(id=order_id)
+            if objects == None or not objects.exists():
+        	return render(request, 'kd/search_order_insider_failed.html', {});
+            else:
+                return HttpResponseRedirect('/order_info/?order_id='+order_id)
 
         sender = None
         sender_name=request.POST['sender_name']
