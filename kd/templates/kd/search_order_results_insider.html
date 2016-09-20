@@ -105,7 +105,7 @@
 	<div class="pagination">
     <span class="step-links">
         {% if orders.has_previous %}
-            <a href="?order_type={{order_type}}&page={{ orders.previous_page_number }}">上一页</a>
+            <a href="?page={{ orders.previous_page_number }}">上一页</a>
         {% endif %}
 
         <span class="current">
@@ -113,7 +113,7 @@
         </span>
 
         {% if orders.has_next %}
-            <a href="?order_type={{order_type}}&page={{ orders.next_page_number }}">下一页</a>
+            <a href="?page={{ orders.next_page_number }}">下一页</a>
         {% endif %}
     </span>
 </div>

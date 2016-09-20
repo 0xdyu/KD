@@ -50,7 +50,7 @@ def user_profile(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             orderList = paginator.page(paginator.num_pages)
-        return render(request, 'kd/profile.html', {'orders' : orderList, 'order_type': order_type})
+        return render(request, 'kd/profile.html', {'orders' : orderList, 'order_type': order_type, 'time_based': time_based, 'asc' : asc})
 
 def __get_orders(request, order_type):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
@@ -182,7 +182,7 @@ def search_order_results_insider(request):
 
         orders = __generate_formate_orders_from_order(objects)
         # sortedOrders = __sort_orders(orders, time_based, '0')
-        paginator = Paginator(orders, 25)
+        paginator = Paginator(orders, 100000)
         page = request.GET.get('page')
         try:
             orderList = paginator.page(page)
