@@ -267,10 +267,12 @@ def edit_order_info(request):
             request.POST['receiver_postcode'])
         price = 0
         if not request.POST['package_price'] == '':
-            price = request.POST['package_price']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_price'].strip())) > 0:
+                price = request.POST['package_price'].strip()
         weight = 0
         if not request.POST['package_weight'] == '':
-            weight = request.POST['package_weight']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_weight'].strip())) > 0:
+                weight = request.POST['package_weight'].strip()
         shipping_user_id = request.POST['shipping_user_id']
         create_time = request.POST['create_time']
         try:
@@ -378,10 +380,13 @@ def create_order(request):
             request.POST['receiver_postcode'])
         price = 0
         if not request.POST['package_price'] == '':
-            price = request.POST['package_price']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_price'].strip())) > 0:
+                price = request.POST['package_price'].strip()
         weight = 0
         if not request.POST['package_weight'] == '':
-            weight = request.POST['package_weight']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_weight'].strip())) > 0:
+
+                weight = request.POST['package_weight']
 
         curOrder = Order.objects.create(id=id,
                 price=price,
