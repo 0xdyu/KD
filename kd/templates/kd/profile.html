@@ -58,7 +58,7 @@
 	<body>
 	
 	<!-- Navigation Bar -->
-	<nav class="navbar navbar-default">
+	<!--<nav class="navbar navbar-default">
 		<div class="container-fluid">
 		    <div class = "navbar-header"> 
 			<a class = "navbar-brand"> 可达物流管理系统 </a></div>
@@ -67,8 +67,9 @@
 				<li><a href="/logout">登出</a></li>
 			</ul>
 		</div>
-	</nav>
-	
+	</nav>-->
+	{% include 'kd/nav.html' %}
+
 	<div class="well well-lg">
         <p>欢迎您， {{ user.email }}</p>
         <div><a class="btn btn-primary " href="/create">创建新订单</a> <a class="btn btn-primary " href="/search_order_insider"> 搜索订单</a> </div>

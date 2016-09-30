@@ -26,7 +26,9 @@
 	<!--<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">-->
     <!-- Navigation Bar -->
 
-    <nav class="navbar navbar-default">
+		
+	
+    <!--<nav class="navbar navbar-default">
       <div class="container-fluid">
 	<div class = "navbar-header">
 	  <a class = "navbar-brand">可达物流管理系统</a></div>
@@ -38,8 +40,10 @@
 	  <li><a href="/login">登录</a></li>
 	  {% endif %}
 	</ul>
+	<br>
       </div>
-    </nav>
+    </nav>-->
+    {% include 'kd/nav.html' %} 
 
     <div class="container-fluid well text-center">
       <div class="row">
@@ -53,8 +57,7 @@
 	  </form>
 	</div>
       </div>
-
-
-
+	<div>{% include 'kd/footnote.html' %}</div>
+ 
   </body>
 </html>
