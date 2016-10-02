@@ -30,7 +30,7 @@ class Order(models.Model):
 
 class ExternalOrder(models.Model):
     external_id = models.CharField(max_length=10, primary_key=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_id = models.CharField(null=True, max_length=10)
     external_order_id = models.CharField(max_length=1000, verbose_name=u"外部单号")
     external_checking_method = models.CharField(max_length=1000,verbose_name=u"查询方式")
 
