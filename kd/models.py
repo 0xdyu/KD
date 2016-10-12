@@ -29,10 +29,9 @@ class Order(models.Model):
         return self.id
 
 class ExternalOrder(models.Model):
-    external_id = models.CharField(max_length=10, primary_key=True)
-    order_id = models.CharField(null=True, max_length=10)
-    external_order_id = models.CharField(max_length=1000, verbose_name=u"外部单号")
-    external_checking_method = models.CharField(max_length=1000,verbose_name=u"查询方式")
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	external_order_id = models.CharField(max_length=1000, primary_key=True, verbose_name=u"外部单号")
+	external_checking_method = models.CharField(max_length=1000,verbose_name=u"查询方式")
 
 class OrderStatus(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

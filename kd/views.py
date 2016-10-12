@@ -295,14 +295,12 @@ def edit_external_order_info_show(request):
         order_id = request.GET['order_id']
         external_order_id=''
         external_checking_method=''
-        external_id=''
         if ExternalOrder.objects.filter(order=order_id).exists():
             external_order_objects=ExternalOrder.objects.filter(order=order_id)
             external_order_id=external_order_objects.values()[0]['external_order_id']
             external_checking_method=external_order_objects.values()[0]['external_checking_method']
-            external_id=external_order_objects.values()[0]['external_id']
         return render(request, 'kd/edit_external_order_info_show.html', 
-                {'external_order_id' : external_order_id, 'external_checking_method' : external_checking_method, 'order_id' : order_id, 'external_id' : external_id})  
+                {'external_order_id' : external_order_id, 'external_checking_method' : external_checking_method, 'order_id' : order_id })  
     return render(request, 'kd/search_order_failed.html', {})
 
 @csrf_protect
@@ -312,19 +310,17 @@ def edit_external_order_info(request):
     if request.method == "POST":
         order_id = request.POST['order_id']
         curOrder = Order.objects.get(id=order_id)
-        old_external_id = request.POST['old_external_id']
-        external_checking_method = request.POST['external_checking_method']
         external_order_id = request.POST['external_order_id']
-        if ExternalOrder.objects.filter(external_id=old_external_id).exists():
-            ExternalOrder.objects.filter(external_id=old_external_id).delete()
+        external_checking_method = request.POST['external_checking_method']
+        old_external_order_id = request.POST['old_external_order_id']
+        if ExternalOrder.objects.filter(external_order_id=old_external_order_id).exists():
+            ExternalOrder.objects.filter(external_order_id=old_external_order_id).delete()
             # curExternalOrder = ExternalOrder.objects.get(order=order_id)
             # curExternalOrder.external_order_id = external_order_id
             # curExternalOrder.external_checking_method = external_checking_method
             # curExternalOrder.save()
-        if (not external_order_id == '') or (not external_checking_method == ''):
-            external_id = __generate_order_id()
+        if ((not external_order_id == '') or (not external_checking_method == '')) and not ExternalOrder.objects.filter(external_order_id=external_order_id).exists():
             ExternalOrder.objects.create(order=curOrder,
-                external_id=external_id,
                 external_order_id=external_order_id,
                 external_checking_method=external_checking_method)
         return render(request, 'kd/order_edit_success.html', {'order_id' : order_id})
@@ -409,12 +405,11 @@ def create_order(request):
             )
         external_order_id = request.POST['external_order_id']
         external_checking_method = request.POST['external_checking_method']
-        if (not external_order_id == '') and (not external_checking_method == ''):
-            external_id = __generate_order_id()
+        if ((not external_order_id == '') or (not external_checking_method == '')) and not ExternalOrder.objects.filter(external_order_id=external_order_id).exists():
             ExternalOrder.objects.create(order=curOrder,
-                external_id=external_id,
                 external_order_id=external_order_id,
                 external_checking_method=external_checking_method)
+        
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
 
@@ -487,7 +482,7 @@ def __generate_order_id():
     start = 10 ** 9
     end = (10 ** 10) - 1
     random_id = str(randint(start, end))
-    while Order.objects.filter(id=random_id).exists()  or Quote.objects.filter(id=random_id).exists() or ExternalOrder.objects.filter(external_id=random_id).exists():
+    while Order.objects.filter(id=random_id).exists()  or Quote.objects.filter(id=random_id).exists():
             random_id = __generate_order_id()
     return random_id;
 

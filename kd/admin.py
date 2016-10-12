@@ -6,7 +6,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'weight', 'shipping_user_id', 'sender',  'receiver',  'create_time')
 
 class ExternalOrderAdmin(admin.ModelAdmin):
-    list_display = ('external_id', 'order_id', 'external_order_id', 'external_checking_method')
+    list_display = ('order', 'external_order_id', 'external_checking_method')
 
 class OrderStatusAdmin(admin.ModelAdmin):
 	list_display = ('order', 'id', 'time', 'status', 'location', 'primKey')
