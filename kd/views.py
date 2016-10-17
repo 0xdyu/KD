@@ -50,7 +50,7 @@ def user_profile(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             orderList = paginator.page(paginator.num_pages)
-        return render(request, 'kd/profile.html', {'orders' : orderList, 'order_type': order_type})
+        return render(request, 'kd/profile.html', {'orders' : orderList, 'order_type': order_type, 'time_based': time_based, 'asc' : asc})
 
 def __get_orders(request, order_type):
     relatedOrderStatus=OrderStatus.objects.filter(order__shipping_user_id=request.user.email)
@@ -141,8 +141,13 @@ def search_order_results_insider(request):
         return render(request, 'kd/home.html', {})
     if request.method == "POST":
         order_id = request.POST['order_id']
+        order_id = order_id.strip()
         if not order_id == "":
-            return HttpResponseRedirect('/order_info/?order_id='+order_id)
+            objects = Order.objects.filter(id=order_id)
+            if objects == None or not objects.exists():
+        	return render(request, 'kd/search_order_insider_failed.html', {});
+            else:
+                return HttpResponseRedirect('/order_info/?order_id='+order_id)
 
         sender = None
         sender_name=request.POST['sender_name']
@@ -177,7 +182,7 @@ def search_order_results_insider(request):
 
         orders = __generate_formate_orders_from_order(objects)
         # sortedOrders = __sort_orders(orders, time_based, '0')
-        paginator = Paginator(orders, 25)
+        paginator = Paginator(orders, 100000)
         page = request.GET.get('page')
         try:
             orderList = paginator.page(page)
@@ -262,10 +267,12 @@ def edit_order_info(request):
             request.POST['receiver_postcode'])
         price = 0
         if not request.POST['package_price'] == '':
-            price = request.POST['package_price']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_price'].strip())) > 0:
+                price = request.POST['package_price'].strip()
         weight = 0
         if not request.POST['package_weight'] == '':
-            weight = request.POST['package_weight']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_weight'].strip())) > 0:
+                weight = request.POST['package_weight'].strip()
         shipping_user_id = request.POST['shipping_user_id']
         create_time = request.POST['create_time']
         try:
@@ -312,7 +319,7 @@ def edit_external_order_info(request):
             # curExternalOrder.external_order_id = external_order_id
             # curExternalOrder.external_checking_method = external_checking_method
             # curExternalOrder.save()
-        if (not external_order_id == '') or (not external_checking_method == ''):
+        if ((not external_order_id == '') or (not external_checking_method == '')) and not ExternalOrder.objects.filter(external_order_id=external_order_id).exists():
             ExternalOrder.objects.create(order=curOrder,
                 external_order_id=external_order_id,
                 external_checking_method=external_checking_method)
@@ -373,10 +380,13 @@ def create_order(request):
             request.POST['receiver_postcode'])
         price = 0
         if not request.POST['package_price'] == '':
-            price = request.POST['package_price']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_price'].strip())) > 0:
+                price = request.POST['package_price'].strip()
         weight = 0
         if not request.POST['package_weight'] == '':
-            weight = request.POST['package_weight']
+            if len(re.findall("^\d+\.\d+$", request.POST['package_weight'].strip())) > 0:
+
+                weight = request.POST['package_weight']
 
         curOrder = Order.objects.create(id=id,
                 price=price,
@@ -395,10 +405,11 @@ def create_order(request):
             )
         external_order_id = request.POST['external_order_id']
         external_checking_method = request.POST['external_checking_method']
-        if (not external_order_id == '') or (not external_checking_method == ''):
+        if ((not external_order_id == '') or (not external_checking_method == '')) and not ExternalOrder.objects.filter(external_order_id=external_order_id).exists():
             ExternalOrder.objects.create(order=curOrder,
                 external_order_id=external_order_id,
                 external_checking_method=external_checking_method)
+        
         
     return render(request, 'kd/order_create_success.html', {'order_id' : id}) 
 
