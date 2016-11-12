@@ -14,13 +14,31 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style type="text/css">
+    .login-div{
+        margin: 0 auto;
+        width: 30%;
+        margin-top: 15%;
+    }
 
+    .submit-button{
+          background: rgb(208,116,74) !important;
+          border: none;
+          height: 30px;
+          margin: 10px auto;
+          display: block;
+      }
+      tr{
+            border-style: hidden;
+      }
+</style>
     </head>
     
-	<body>
+<!--   {% load static %}
+  <body background="{% static "img/271.jpg" %}"> -->
 
 	<!-- Navigation Bar -->
-	<nav class="navbar navbar-default">
+	<!-- <nav class="navbar navbar-default">
 		<div class="container-fluid">
 		    <div class = "navbar-header"> 
 			<a class = "navbar-brand"> 可达物流管理系统 </a></div>
@@ -28,12 +46,12 @@
 				<li class="acitve"><a href="/">首頁 </a></li>
 			</ul>
 		</div>
-	</nav>
-
+	</nav> -->
+{% include 'nav.html' %}
 
 {% block content %}
     <div id="content-container" class="container p-none">
-        <div class="lgn-container col-lg-5">
+        <div class="login-div">
             <form id="login-form" method="post" 
                   action="{% url 'django.contrib.auth.views.login' %}">
                 {% csrf_token %}
@@ -56,9 +74,9 @@
                 	{% endif %} -->
 
                 </table>
-                <div class="button">
-                	<input type="submit" value="登陆" class="btn btn-primary pull-left" />
-                <input type="hidden" name="next" value="/user_profile" />
+                <div class="button" style="        text-align: center;">
+                	<input type="submit" value="登陆" class="btn btn-primary submit-button" />
+                    <input type="hidden" name="next" value="/user_profile" />
                 </div>
             </form>
         </div>
