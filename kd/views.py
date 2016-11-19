@@ -21,6 +21,9 @@ from operator import itemgetter
 def home(request):
     return render(request, 'kd/home.html')
 
+def about(request):
+    return render(request, 'kd/about.html')
+
 @csrf_protect
 def login(request):
     return render(request, 'kd/login.html')
