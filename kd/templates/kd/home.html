@@ -50,31 +50,9 @@
       }
     </style>
   </head>
-  <!-- {% load static %}
-  <body background="{% static "img/271.jpg" %}"> -->
-	<!-- background="http://images.freepicturesweb.com/img1/20/15/d/271.jpg"-->
-	<!--<img class="img-responsive" src="{% static 'img/home.jpg' %}" alt="">-->
-    <!-- Navigation Bar -->
 
-   <!--  <nav class="navbar navbar-default">
-      <div class="container-fluid">
-      	<div class = "navbar-header">
+    {% include 'kd/nav.html' %} 
 
-        	<ul class="nav nav-tabs navbar-left">
-          <li><a class="acitve brand" href="/">可达物流管理系统 </a></li>
-        	  <li class="acitve"><a href="/">主页 </a></li>
-            <li class="acitve"><a href="/">面板 </a></li>
-            <li class="acitve"><a href="/">报价 </a></li>
-            <li class="acitve"><a href="/">关于我们 </a></li>
-        	  {% if user.is_authenticated %}
-        	  <li><a href="/user_profile/">仪表盘</a></li>
-        	  {% else %}
-        	  <li class="float-right"><a href="/login">登录</a></li>
-        	  {% endif %}
-        	</ul>
-      </div>
-    </nav> -->
-    {% include 'kd/nav.html' %}
     <div class="container-fluid well text-center round-border search-bar">
       <div class="row">
       	<br> 
@@ -88,6 +66,7 @@
       </div>
     </div>
   {% include 'kd/footer.html' %}
+
 
   </body>
 </html>
