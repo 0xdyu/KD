@@ -1,15 +1,57 @@
+ <style type="text/css">
+      .float-right{
+        position: absolute !important;
+        right: 0px;
+      }
+      .navbar{
+        /*background: rgba(212,105,53,0.75) !important;*/
+        /*border: none;*/
+
+      }
+      .round-border{
+            border-radius: 15px;
+      }
+    /*  a{
+        color: white !important;
+      }*/
+      .nav-tabs{
+        border:none;
+      }
+      .brand{
+        font-weight: bold;
+      }
+      .nav{
+        margin-top: 1%;
+        font-size: medium;
+      }
+      html{
+        height: 100%;
+      }
+      body{
+        min-height:100%;
+        position:relative;
+      }
+    </style>
+      {% load static %}
+  <body background="{% static "img/home.jpg" %}">
 <nav class="navbar navbar-default">
       <div class="container-fluid">
-	<div class = "navbar-header">
-	  <a class = "navbar-brand">可达物流管理系统</a></div>
-	<ul class="nav nav-tabs navbar-left">
-	  <li class="acitve"><a href="/">首頁 </a></li>
-	  {% if user.is_authenticated %}
-	  <li><a href="/user_profile/">仪表盘</a></li>
-	  <li><a href="/logout">登出</a></li>
-	  {% else %}
-	  <li><a href="/login">登录</a></li>
-	  {% endif %}
-	</ul>
+        <div class = "navbar-header">
+
+          <ul class="nav nav-tabs navbar-left">
+          <li><a class="acitve brand" href="/">可达物流管理系统 </a></li>
+            <li class="acitve"><a href="/">主页 </a></li>
+            {% if user.is_authenticated %}
+            <li class="acitve"><a href="/user_profile/">面板 </a></li>
+            {% endif %}
+
+            <li class="acitve"><a href="/">报价 </a></li>
+            <li class="acitve"><a href="/about">关于我们 </a></li>
+            {% if not user.is_authenticated %}
+            <li class="float-right"><a href="/login">登录</a></li>
+            {% else %}
+            <li class="float-right"><a href="/login">登出</a></li>            
+            {% endif %}
+          </ul>
       </div>
     </nav>

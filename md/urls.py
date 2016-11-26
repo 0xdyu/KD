@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.contrib.auth import urls as auth_urls
 from kd import views as kd_views
 from django.views.generic import RedirectView
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     url(r'^accounts/', include('users.urls'), name='account'),
     #url(r'^accounts/profile/$', TemplateView.as_view(template_name='profile.html'), name='user_profile'),
     url(r'^$', kd_views.home, name='home'),
@@ -29,6 +31,7 @@ urlpatterns = [
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^profile/', kd_views.user_profile, name='user_profile'),
     url(r'^user_profile/$', RedirectView.as_view(url='/profile/?order_type=all&time=create_time&asc=0&page=1')),
+    url(r'^about$', kd_views.about, name='about'),
     url(r'^create/', kd_views.create, name='create'),
     url(r'^create_order/', kd_views.create_order, name='create_order'),
     url(r'^search_order_insider/', kd_views.search_order_form_insider, name='search_order_form_insider'),

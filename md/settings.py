@@ -121,6 +121,7 @@ FILE_CHARSET = 'utf-8'
 
 DEFAULT_CHARSET = 'utf-8'
 
+DEBUG="True"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
